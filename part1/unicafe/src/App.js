@@ -2,22 +2,58 @@ import { useState } from 'react'
 const Header = ({content}) =>(
   <h1>{content}</h1>
 )
+const Statstics = (props) =>{
+ const {good, bad, neutral, all} = props;
+  return(
+    <div>
+      <p>good {good}</p>
+      <p>neutral {neutral}</p>
+      <p>bad {bad}</p>
+      <p>all {all}</p>
+      <p>average {(good - bad)/all}</p>
+      <p> positive {good/all}%</p>
+    </div>
+  )
+} 
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const [all, setAll] = useState(0)
+  let giveFeedback = (type) => {
+    let func;
+    if(type == 'good')
+      func = ()=>{
+        setGood(good+1);
 
+        setAll(all+1);
+      }
+    else if(type == 'bad')
+      func = ()=>{
+      setBad(bad+1);
+
+      setAll(all+1);
+    };
+    else
+    func = ()=>{
+      setNeutral(neutral+1);
+      setAll(all+1);
+
+      };
+    return func;
+      
+    };
+  
   return (
     <div>
       <Header content="give feedback"/>
-      <button onClick={()=>setGood(good+1)}>good</button>
-      <button onClick={()=>setNeutral(neutral+1)}>neutral</button>
-      <button onClick={()=>setBad(bad+1)}>bad</button>
+      <button onClick={giveFeedback('good')}>good</button>
+      <button onClick={giveFeedback('neutral')}>neutral</button>
+      <button onClick={giveFeedback('bad')}>bad</button>
       <Header content="statstics"/>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
+
+      <Statstics good={good} bad={bad} neutral={neutral} all={all}/>
     </div>
   )
 }
