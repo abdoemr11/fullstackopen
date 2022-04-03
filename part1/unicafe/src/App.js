@@ -4,6 +4,7 @@ const Header = ({content}) =>(
 )
 const Statstics = (props) =>{
  const {good, bad, neutral, all} = props;
+ if(all > 0)
   return(
     <div>
       <p>good {good}</p>
@@ -14,6 +15,10 @@ const Statstics = (props) =>{
       <p> positive {good/all}%</p>
     </div>
   )
+  else 
+    return(
+      <div>No feedback given</div>
+    )
 } 
 const App = () => {
   // save clicks of each button to its own state
