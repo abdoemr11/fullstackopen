@@ -2,17 +2,26 @@ import { useState } from 'react'
 const Header = ({content}) =>(
   <h1>{content}</h1>
 )
+const Button = ({feedBack,type}) => (
+  <button onClick={feedBack}>{type}</button>
+);
+const StatsticsLine = ({name, expr, token}) =>
+(
+<p>{name} {expr} {token?token:''}</p>
+);
 const Statstics = (props) =>{
  const {good, bad, neutral, all} = props;
  if(all > 0)
   return(
     <div>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {all}</p>
-      <p>average {(good - bad)/all}</p>
-      <p> positive {good/all}%</p>
+      <StatsticsLine name={"good"} expr={good}/>
+      <StatsticsLine name={"neutral"} expr={neutral}/>
+      <StatsticsLine name={"bad"} expr={bad}/>
+      <StatsticsLine name={"all"} expr={all}/>
+      <StatsticsLine name={"average"} expr={(good - bad)/all}/>
+      <StatsticsLine name={"positive"} expr={good/all} token={'%'}/>
+
+
     </div>
   )
   else 
@@ -53,9 +62,10 @@ const App = () => {
   return (
     <div>
       <Header content="give feedback"/>
-      <button onClick={giveFeedback('good')}>good</button>
-      <button onClick={giveFeedback('neutral')}>neutral</button>
-      <button onClick={giveFeedback('bad')}>bad</button>
+      <Button feedBack={giveFeedback('good')} type={'good'}/>
+      <Button feedBack={giveFeedback('neutral')} type={'neutral'}/>
+      <Button feedBack={giveFeedback('bad')} type={'bad'}/>
+
       <Header content="statstics"/>
 
       <Statstics good={good} bad={bad} neutral={neutral} all={all}/>
