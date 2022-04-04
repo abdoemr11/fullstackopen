@@ -1,5 +1,25 @@
 import { useState } from 'react'
+const MaxAnec = ({anecdotes, voted})=>
+{
+  let maxIndex = 0;
+  console.log(voted);
+  // console.log('voted length', Object.keys(voted).length);
+  for (let index = 0; index < Object.keys(voted).length; index++) {
+    // console.log(voted[index], voted[maxIndex]);
+    console.log('hi from the loop');
+    if(voted[index] > voted[maxIndex])
+      maxIndex = index;
+  }
+  console.log(maxIndex);
+  return(
+    <>
+    {anecdotes[maxIndex]}
+    <p>has {voted[maxIndex]} votes</p>
+    </>
 
+  )
+
+}
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often',
@@ -12,15 +32,14 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0);
-  let anecdotesVotes = new Uint8Array(anecdotes.length);
+  let anecdotesVotes = new Uint16Array(anecdotes.length);
 
   const [voted, setVoted]= useState(anecdotesVotes);
-const increaseVote = ()=>{
-  const oldVotes = {...voted};
-  oldVotes[selected]++;
-  console.log(oldVotes);
-  setVoted(oldVotes);
-}
+  const increaseVote = ()=>{
+    const oldVotes = {...voted};
+    oldVotes[selected]++;
+    setVoted(oldVotes);
+  }
   return (
     <div>
       {anecdotes[selected]}
@@ -28,6 +47,8 @@ const increaseVote = ()=>{
       <br/>
       <button onClick={()=>setSelected(Math.floor(Math.random()* anecdotes.length))}>next anecdotes</button>
       <button onClick={increaseVote}>vote</button>
+      <h2>Anecdotes with most votes</h2>
+      <MaxAnec anecdotes={anecdotes} voted = {voted}/>
     </div>
   )
 }
