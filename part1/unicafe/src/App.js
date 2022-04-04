@@ -7,22 +7,23 @@ const Button = ({feedBack,type}) => (
 );
 const StatsticsLine = ({name, expr, token}) =>
 (
-<p>{name} {expr} {token?token:''}</p>
+<tr><td>{name}</td><td>{expr}</td><td>{token?token:''}</td></tr>
 );
 const Statstics = (props) =>{
  const {good, bad, neutral, all} = props;
  if(all > 0)
   return(
-    <div>
+    <table>
+    <tbody>
       <StatsticsLine name={"good"} expr={good}/>
       <StatsticsLine name={"neutral"} expr={neutral}/>
       <StatsticsLine name={"bad"} expr={bad}/>
       <StatsticsLine name={"all"} expr={all}/>
       <StatsticsLine name={"average"} expr={(good - bad)/all}/>
       <StatsticsLine name={"positive"} expr={good/all} token={'%'}/>
+    </tbody>
 
-
-    </div>
+    </table>
   )
   else 
     return(
