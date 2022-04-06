@@ -28,7 +28,7 @@ const Content = ({ parts }) => {
 const Course = ({course}) => {
 
     let sum = course.parts.reduce((pre, cur) => cur.exercises+pre, 0);
-    console.log(sum);
+    // console.log(sum);
   return (
     <div>
       <Header course={course.name} />
