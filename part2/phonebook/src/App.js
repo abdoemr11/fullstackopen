@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 const Filter = ({filterName, handleFilterChange})=> {
   return (
     <>
@@ -8,17 +9,52 @@ const Filter = ({filterName, handleFilterChange})=> {
     );
   
 }
+const Persons = ({persons}) => {
+  return <div>
+    {persons.map((p)=><li key={p.name}>{p.name} :  {p.number}</li>)}  
+  </div>
+
+}
+const PersonForm = (props) => {
+ const {addNewPerson,
+    newName,
+    handleNewNameChange,
+    newNum,
+    handleNewNumChange
+
+  } = props;
+  return (
+    <form onSubmit={addNewPerson}>
+        <div>
+          name: <input value={newName} onChange={handleNewNameChange}/>
+        </div>
+        <div>
+          number: 
+        <input value={newNum} onChange={handleNewNumChange}/>
+        </div>
+        <div>
+          <button type="submit" >add</button>
+        </div>
+      </form>
+  )
+}
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas',
-      number: '1231-324235235' }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('');
   const [newNum, setNewNum] = useState('');
   const [filterName, setFilterName] = useState('');
   const [showAll, setShowAll] = useState(true);
-
-
+  //fetching the data from the server using effect hook
+  const hook = () => {
+    console.log('axiosing ');
+    axios
+      .get("http://localhost:3002/persons")
+      .then((response)=>{
+        console.log(response);
+        setPersons(response.data);
+      })
+  }
+  useEffect(hook, []);
   const personsToShow = showAll? persons: persons.filter(p=>p.name.toLowerCase().includes(filterName.toLowerCase()));
   const handleNewNameChange = (event)=>{
     setNewName(event.target.value);
@@ -45,20 +81,16 @@ const App = () => {
 
       <h2>Phonebook</h2>
       <Filter filterName={filterName} handleFilterChange={handleFilterChange}/>
-      <form onSubmit={addNewPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNewNameChange}/>
-        </div>
-        <div>
-          number: 
-        <input value={newNum} onChange={handleNewNumChange}/>
-        </div>
-        <div>
-          <button type="submit" >add</button>
-        </div>
-      </form>
+      <PersonForm 
+        addNewPerson={addNewPerson}
+        newName = {newName}
+        handleNewNameChange = {handleNewNameChange}
+        newNum = {newNum}
+        handleNewNumChange = {handleNewNumChange}
+
+      />
       <h2>Numbers</h2>
-      {personsToShow.map((p)=><li key={p.name}>{p.name} :  {p.number}</li>)}
+      <Persons persons={personsToShow}/>
     </div>
   )
 }
