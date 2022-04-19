@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import personService from './services/persons' ;
 const Filter = ({filterName, handleFilterChange})=> {
   return (
     <>
@@ -9,9 +9,14 @@ const Filter = ({filterName, handleFilterChange})=> {
     );
   
 }
-const Persons = ({persons}) => {
+const Persons = ({persons, handleDelete}) => {
   return <div>
-    {persons.map((p)=><li key={p.name}>{p.name} :  {p.number}</li>)}  
+    {persons.map((p)=>
+    <li key={p.name}>
+      {p.name} :  {p.number}
+      <button onClick={()=>handleDelete(p.id)}>delete</button>
+    </li>)
+    }  
   </div>
 
 }
@@ -47,11 +52,10 @@ const App = () => {
   //fetching the data from the server using effect hook
   const hook = () => {
     console.log('axiosing ');
-    axios
-      .get("http://localhost:3002/persons")
-      .then((response)=>{
-        console.log(response);
-        setPersons(response.data);
+    personService
+      .getAll()
+      .then((initialPersons)=>{
+        setPersons(initialPersons);
       })
   }
   useEffect(hook, []);
@@ -74,14 +78,23 @@ const App = () => {
 
     }
     const newPerson = {name : newName, number: newNum, id: persons.length+1};
-    axios
-      .post("http://localhost:3002/persons", newPerson)
-      .then(response => {
-        setPersons(persons.concat(response.data));
+    personService
+      .add(newPerson)
+      .then(nPerson => {
+        setPersons(persons.concat(nPerson));
         setNewName('');
         setNewNum('');
       })
     
+  }
+  const deletePerson = (personId)=>{
+    if(!window.confirm(`Delete ${persons.filter(p=>p.id ===personId)[0].name}`))
+      return;
+    personService
+      .remove(personId)
+      .then(deletedPerson=>{
+        setPersons(persons.filter(p=> p.id !== personId))
+      })
   }
   return (
     <div>
@@ -97,7 +110,7 @@ const App = () => {
 
       />
       <h2>Numbers</h2>
-      <Persons persons={personsToShow}/>
+      <Persons persons={personsToShow} handleDelete={deletePerson}/>
     </div>
   )
 }
