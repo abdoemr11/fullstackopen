@@ -13,10 +13,15 @@ const add = (newObject) => {
       .post(baseUrl, newObject)
       .then(response=>response.data)
 }
+const update = (newObject)=>(
+    axios
+        .put(`${baseUrl}/${newObject.id}`, newObject)
+        .then(response=>response.data)
+)
 const remove = (id) => (  
     axios
         .delete(`${baseUrl}/${id}`)
         .then(response=>response.data)
 )
 
-export default {getAll, add, remove}
+export default {getAll, add, remove, update}
