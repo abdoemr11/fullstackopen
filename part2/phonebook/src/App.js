@@ -1,54 +1,16 @@
 import { useState, useEffect } from 'react';
 import personService from './services/persons' ;
-const Filter = ({filterName, handleFilterChange})=> {
-  return (
-    <>
-    Filter Shown with: <input type="text" value={filterName} onChange={handleFilterChange}/>
-
-    </>
-    );
-  
-}
-const Persons = ({persons, handleDelete}) => {
-  return <div>
-    {persons.map((p)=>
-    <li key={p.name}>
-      {p.name} :  {p.number}
-      <button onClick={()=>handleDelete(p.id)}>delete</button>
-    </li>)
-    }  
-  </div>
-
-}
-const PersonForm = (props) => {
- const {addNewPerson,
-    newName,
-    handleNewNameChange,
-    newNum,
-    handleNewNumChange
-
-  } = props;
-  return (
-    <form onSubmit={addNewPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNewNameChange}/>
-        </div>
-        <div>
-          number: 
-        <input value={newNum} onChange={handleNewNumChange}/>
-        </div>
-        <div>
-          <button type="submit" >add</button>
-        </div>
-      </form>
-  )
-}
+import {Filter} from './components/Filter';
+import { Persons } from './components/Persons';
+import {PersonForm} from './components/PersonForm';
+import {Notification} from './components/Notification';
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('');
   const [newNum, setNewNum] = useState('');
   const [filterName, setFilterName] = useState('');
   const [showAll, setShowAll] = useState(true);
+  const [notification, setNotfication] = useState({});
   //fetching the data from the server using effect hook
   const hook = () => {
     console.log('axiosing ');
@@ -60,6 +22,10 @@ const App = () => {
   }
   useEffect(hook, []);
   const personsToShow = showAll? persons: persons.filter(p=>p.name.toLowerCase().includes(filterName.toLowerCase()));
+  /**
+   * 
+   * handle input controlled elements 
+   */
   const handleNewNameChange = (event)=>{
     setNewName(event.target.value);
   }
@@ -70,6 +36,10 @@ const App = () => {
   const handleNewNumChange = (e) => {
     setNewNum(e.target.value);
   }
+  /**
+   * 
+   * add new person or update his informatino if not exist
+   */
   const addNewPerson = (e) => {
     e.preventDefault();
     let update = false;
@@ -96,6 +66,13 @@ const App = () => {
         setPersons(persons.map(person=> person.id === nPerson.id?nPerson:person));
         setNewName('');
         setNewNum('');
+        setNotfication({type: 'Success', msg: `updated ${nPerson} information successfully`});
+        setTimeout(()=>setNotfication({}), 2000);
+      })
+      .catch(()=>{
+        setNotfication({type: 'Error', msg: `Information of  ${notification.person} has already been removed from the server`});
+        setTimeout(()=>setNotfication({}), 2000);
+        setPersons(persons.filter(p=> p.id !== newPersonInfo.id));
       })
     }
     else {
@@ -107,11 +84,16 @@ const App = () => {
         setPersons(persons.concat(nPerson));
         setNewName('');
         setNewNum('');
+        setNotfication({type: 'Success', msg: `added ${nPerson} successfully`});
+        setTimeout(()=>setNotfication({}), 2000);
       })
     }
 
     
   }
+  /**
+   * 
+   */
   const deletePerson = (personId)=>{
     if(!window.confirm(`Delete ${persons.filter(p=>p.id ===personId)[0].name}`))
       return;
@@ -125,6 +107,7 @@ const App = () => {
     <div>
 
       <h2>Phonebook</h2>
+      <Notification notification={notification}/>
       <Filter filterName={filterName} handleFilterChange={handleFilterChange}/>
       <PersonForm 
         addNewPerson={addNewPerson}
