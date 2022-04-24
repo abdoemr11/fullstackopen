@@ -66,11 +66,11 @@ const App = () => {
         setPersons(persons.map(person=> person.id === nPerson.id?nPerson:person));
         setNewName('');
         setNewNum('');
-        setNotfication({type: 'Success', msg: `updated ${nPerson} information successfully`});
+        setNotfication({type: 'Success', msg: `updated ${nPerson.name} information successfully`});
         setTimeout(()=>setNotfication({}), 2000);
       })
       .catch(()=>{
-        setNotfication({type: 'Error', msg: `Information of  ${notification.person} has already been removed from the server`});
+        setNotfication({type: 'Error', msg: `Information of  ${newPersonInfo.name} has already been removed from the server`});
         setTimeout(()=>setNotfication({}), 2000);
         setPersons(persons.filter(p=> p.id !== newPersonInfo.id));
       })
@@ -84,7 +84,11 @@ const App = () => {
         setPersons(persons.concat(nPerson));
         setNewName('');
         setNewNum('');
-        setNotfication({type: 'Success', msg: `added ${nPerson} successfully`});
+        setNotfication({type: 'Success', msg: `added ${nPerson.name} successfully`});
+        setTimeout(()=>setNotfication({}), 2000);
+      }).catch(error=>{
+        console.log(error.response.data.error)
+        setNotfication({type: 'Error', msg: error.response.data.error});
         setTimeout(()=>setNotfication({}), 2000);
       })
     }
