@@ -19,10 +19,27 @@ const Country = ({country}) =>{
     )
 }
 const ShortCountries = ({countries}) =>{
-
+    const [isShow, setShow] = useState([countries.map(c=>false)])
+    useEffect(()=>setShow(countries.map(c=>false)), [ countries])
+    console.log('form outside',isShow)
+    const handleClick = (id) =>{
+        //why this don't work?
+        //newShow = isShow
+        //newShow[i] = !isShow[i]
+        setShow(isShow.map((e,i)=>i===id?!e:e));
+    }
     return(
         <div>
-            {countries.map(c=><p key={c['cca2']}>{c.name["common"]}</p>)}
+            {countries.map((c,i)=>
+                    <div key={c['cca2']}>
+                        <span >{c.name["common"]}</span>
+                        <button onClick={ () =>handleClick(i)}>{
+                            isShow[i]?'hide':'show'
+
+                        }
+                        </button>
+                        {isShow[i]?<Country country={countries[i]}/>:""}
+                    </div>)}
         </div>
     );
 }
