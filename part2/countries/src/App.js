@@ -1,6 +1,42 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
+
+const DisplayWeather = ({weather}) =>{
+    console.log('weather is ', weather);
+    if(weather){
+        console.log(weather.weather.icon)
+        return(
+            <>
+
+                <p>Temperature {Math.round(weather.main.temp - 273.15)} Celcius</p>
+                <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                     alt={weather.weather.main}
+                />
+                <p>wind {weather.wind.speed}m/s</p>
+            </>
+
+        );
+    }
+
+
+    return (<></>)
+}
 const Country = ({country}) =>{
+    const api_key = process.env.REACT_APP_API_KEY;
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${country.latlng[0]}&lon=${country.latlng[0]}&appid=${api_key}`
+    console.log(url)
+    const [weatherObj, setWeatherObj] = useState();
+
+    useEffect(()=>{
+        axios
+            .get(url)
+            .then(response=>{
+                setWeatherObj(response.data)
+            })
+            .catch(e=>console.log(e))
+    },[url])
+    console.log(weatherObj)
+
     return(
         <div>
             <h1>{country.name["common"]}</h1>
@@ -13,6 +49,9 @@ const Country = ({country}) =>{
 
             </ul>
             <img src={country.flags["png"]} alt=""/>
+            <h2>Weather in {country.capital}</h2>
+            <DisplayWeather weather={weatherObj}/>
+
         </div>
 
 
