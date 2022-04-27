@@ -38,8 +38,8 @@ app.post('/api/blogs', (request, response) => {
             response.status(201).json(result)
         })
 })
-
+const server = http.createServer(app)
 const PORT = 3003
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
