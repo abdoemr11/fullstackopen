@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
-
+const config = require('./utils/config')
 const blogSchema = new mongoose.Schema({
     title: String,
     author: String,
@@ -13,7 +13,7 @@ const blogSchema = new mongoose.Schema({
 const Blog = mongoose.model('Blog', blogSchema)
 
 // eslint-disable-next-line no-undef
-const mongoUrl = process.env.MONGDODB_URI
+const mongoUrl = config.MONGO_URL
 mongoose.connect(mongoUrl)
 
 app.use(cors())
