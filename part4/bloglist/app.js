@@ -11,6 +11,7 @@ const logger = require('./utils/logger')
 
 // eslint-disable-next-line no-undef
 const mongoUrl = config.MONGO_URL
+
 mongoose.connect(mongoUrl)
     .then(() => {
         logger.info('connected successsfully')

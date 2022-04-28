@@ -1,10 +1,11 @@
 {
   "scripts": {
-    "dev": "nodemon index.js",
-    "test": "jest --verbose"
+    "dev": "NODE_ENV=dev nodemon index.js",
+    "test": "NODE_ENV=test jest --verbose"
   },
   "devDependencies": {
-    "eslint": "^8.14.0"
+    "eslint": "^8.14.0",
+    "supertest": "^6.2.3"
   },
   "dependencies": {
     "cors": "^2.8.5",

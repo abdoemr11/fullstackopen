@@ -9,13 +9,26 @@ blogRouter.get('/api/blogs', (request, response) => {
         })
 })
 
-blogRouter.post('/api/blogs', (request, response) => {
-    const blog = new Blog(request.body)
+blogRouter.post('/api/blogs', async (request, response, next) => {
+    const blog = request.body
+    //check if the blog contain the required attributes
 
-    blog
-        .save()
-        .then(result => {
-            response.status(201).json(result)
-        })
+    const mustHaveProps = ['title', 'author', 'url', 'likes']
+    let isValidBlog = true
+    for (let p of mustHaveProps) {
+        if(!blog.hasOwnProperty(p)) {
+            isValidBlog = false
+            //TODO remove for testing only
+            break
+        }
+    }
+    if(isValidBlog) {
+        const blogObj = new Blog(blog)
+        const result = await blogObj.save()
+        response.status(201).json(result)
+    } else {
+        response.status(400).end()
+    }
+
 })
 module.exports = blogRouter
