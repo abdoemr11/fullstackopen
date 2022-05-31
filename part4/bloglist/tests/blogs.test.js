@@ -118,14 +118,17 @@ describe('api testing',  () => {
             .delete(`/api/blogs/${blogToBeDel.id}`)
             .expect(204)
 
-    })
+    }, 10000)
     test('update  blog likes', async () => {
-        const blogToBeUpdated = (await Blog.find({}))[0]
+        let blogToBeUpdated = (await Blog.find({}))[0]
+        blogToBeUpdated = blogToBeUpdated.toJSON()
         blogToBeUpdated.likes = 10
+        console.log(blogToBeUpdated.id)
         const resultBlog = await api
             .put(`/api/blogs/${blogToBeUpdated.id}`)
             .send(blogToBeUpdated)
-        expect(resultBlog.likes).toBe(10)
+        console.log(resultBlog)
+        expect(JSON.parse(resultBlog.text).likes).toBe(10)
     })
 
 })
