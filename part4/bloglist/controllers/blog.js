@@ -14,7 +14,7 @@ blogRouter.post('/api/blogs', async (request, response, next) => {
     const blog = request.body
     //check if the blog contain the required attributes
 
-    const mustHaveProps = ['title', 'author', 'url', 'likes']
+    const mustHaveProps = ['title', 'author', 'url']
     let isValidBlog = true
     for (let p of mustHaveProps) {
         if(!blog.hasOwnProperty(p)) {
@@ -24,6 +24,9 @@ blogRouter.post('/api/blogs', async (request, response, next) => {
         }
     }
     if(isValidBlog) {
+        //if no likes is defined define the likes to be zero
+        if(!blog.hasOwnProperty('likes'))
+            blog['likes'] = 0
         const blogObj = new Blog(blog)
         const result = await blogObj.save()
         response.status(201).json(result)

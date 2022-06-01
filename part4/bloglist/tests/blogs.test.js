@@ -130,5 +130,16 @@ describe('api testing',  () => {
         console.log(resultBlog)
         expect(JSON.parse(resultBlog.text).likes).toBe(10)
     })
-
+    test('missing like property will create a post with zero likes', async () => {
+        const blog = {
+            title: 'Go To Statement Considered Harmful',
+            author: 'Edsger W. Dijkstra',
+            url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+        }
+        const result = await api.post('/api/blogs')
+            .send(blog)
+            .set('Accept', 'Application/json')
+            .expect(201)
+        expect(result.body.likes).toBe(0)
+    })
 })
