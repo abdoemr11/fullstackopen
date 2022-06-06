@@ -2,7 +2,14 @@ const Blog = require('../models/blog')
 const { response } = require('express')
 const User = require('../models/user')
 const blogRouter = require('express').Router()
-
+const jwt = require('jsonwebtoken')
+const getTokenFromRequest = req => {
+    const authorization = req.get('authorization')
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        return authorization.substring(7)
+    }
+    return null
+}
 blogRouter.get('/api/blogs', async (request, response) => {
 
     const blogs = await Blog
@@ -14,8 +21,14 @@ blogRouter.get('/api/blogs', async (request, response) => {
 blogRouter.post('/api/blogs', async (request, response, next) => {
     const blog = request.body
     //check if the blog contain the required attributes
+    //verify that user is logged in
+    const token = getTokenFromRequest(request)
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    if(!decodedToken.id) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+    }
 
-    const mustHaveProps = ['title', 'author', 'url', 'user']
+    const mustHaveProps = ['title', 'author', 'url']
 
     let isValidBlog = true
     for (let p of mustHaveProps) {
@@ -26,7 +39,7 @@ blogRouter.post('/api/blogs', async (request, response, next) => {
         }
     }
     if(isValidBlog) {
-        const user =await User.findById(blog.user)
+        const user =await User.findById(decodedToken.id)
         blog.user = user._id
         //if no likes is defined define the likes to be zero
         if(!blog.hasOwnProperty('likes'))
