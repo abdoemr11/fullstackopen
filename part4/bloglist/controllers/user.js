@@ -2,6 +2,7 @@ const userRouter = require('express').Router()
 const User = require('../models/user')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const { json, response } = require('express')
 
 class ValidationError extends Error {
     constructor(message) {
@@ -35,5 +36,9 @@ userRouter.post('/api/users', async (req,res,next) => {
     }
 
 
+})
+userRouter.get('/api/users', async (req, res, next) => {
+    const users = await User.find({}).populate('blogs')
+    res.json(users)
 })
 module.exports = userRouter

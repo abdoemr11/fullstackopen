@@ -3,6 +3,7 @@ const { listWithOneBlog, blogs, empty_list } = require('../utils/test_helper')
 const app = require('../app')
 const supertest = require('supertest')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const api = supertest(app)
 test('dummy returns one', () => {
@@ -142,5 +143,26 @@ describe('api testing',  () => {
             .set('Accept', 'Application/json')
             .expect(201)
         expect(result.body.likes).toBe(0)
+    })
+})
+describe('blog with users', () => {
+    beforeEach(async () => {
+        await User.deleteMany({})
+        await Blog.deleteMany({})
+        const user = {
+            name: 'abdo',
+            username: 'abdosadf',
+            password: 'passs'
+        }
+        const userObj = new User(user)
+        await userObj.save()
+    })
+    test('adding blog with user', async () => {
+        const user = (await User.find({}))[0]
+        let result = await api.post('/api/blogs')
+            .send({ ...listWithOneBlog[0], userId:user._id })
+            .expect(201)
+        console.log(result)
+        expect(result.text.userId).toBe(user._id)
     })
 })
