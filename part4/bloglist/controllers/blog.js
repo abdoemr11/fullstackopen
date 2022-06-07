@@ -55,7 +55,12 @@ blogRouter.post('/api/blogs', async (request, response, next) => {
 })
 blogRouter.delete('/api/blogs/:id', async (request, response,next) => {
     try {
-        await Blog.findByIdAndDelete(request.params.id)
+        const blog = await Blog.findById(request.params.id)
+        const user = jwt.verify(request.token, process.env.SECRET)
+        if(!user.id || blog.user.toString() !== user.id.toString()) {
+            return response.status(401).json({ error: 'You don\'t have permision to delete this blog' })
+        }
+        await blog.deleteOne()
         response.status(204).end()
     } catch (exception) {
         next(exception)

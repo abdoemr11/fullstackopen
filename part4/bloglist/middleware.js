@@ -23,6 +23,9 @@ const tokenExtractor = (req, res, next) => {
 
     next()
 }
+const userExtractor = (req, res, next) => {
+
+}
 module.exports = {
-    unknownEndpoint, errorHandler, tokenExtractor
+    unknownEndpoint, errorHandler, tokenExtractor, userExtractor
 }
