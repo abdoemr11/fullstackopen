@@ -1,10 +1,9 @@
 const Blog = require('../models/blog')
-const { response } = require('express')
 const User = require('../models/user')
 const blogRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 
-blogRouter.get('/api/blogs', async (request, response) => {
+blogRouter.get('/', async (request, response) => {
 
     const blogs = await Blog
         .find({}).populate('user', { username: 1, name: 1 })
@@ -12,13 +11,13 @@ blogRouter.get('/api/blogs', async (request, response) => {
 
 })
 
-blogRouter.post('/api/blogs', async (request, response, next) => {
+blogRouter.post('/', async (request, response, next) => {
     const blog = request.body
     //check if the blog contain the required attributes
     //verify that user is logged in
 
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if(!decodedToken.id) {
+
+    if(!request.user.id) {
         return response.status(401).json({ error: 'token missing or invalid' })
     }
 
@@ -33,7 +32,7 @@ blogRouter.post('/api/blogs', async (request, response, next) => {
         }
     }
     if(isValidBlog) {
-        const user =await User.findById(decodedToken.id)
+        const user =await User.findById(request.user.id)
         blog.user = user._id
         //if no likes is defined define the likes to be zero
         if(!blog.hasOwnProperty('likes'))
@@ -53,10 +52,10 @@ blogRouter.post('/api/blogs', async (request, response, next) => {
 
 
 })
-blogRouter.delete('/api/blogs/:id', async (request, response,next) => {
+blogRouter.delete('/:id', async (request, response,next) => {
     try {
-        const blog = await Blog.findById(request.params.id)
-        const user = jwt.verify(request.token, process.env.SECRET)
+
+        const user = request.user
         if(!user.id || blog.user.toString() !== user.id.toString()) {
             return response.status(401).json({ error: 'You don\'t have permision to delete this blog' })
         }
