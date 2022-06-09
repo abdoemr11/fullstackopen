@@ -58,6 +58,20 @@ describe('favoirte blogs', () => {
         expect(result).toEqual(expected_result)
     })
 })
+describe('author and their blogs', () => {
+    test('return author with most blog and its number',  () => {
+        expect(listHelper.mostBlogs(blogs)).toStrictEqual({
+            author: 'Robert C. Martin',
+            blogs: 3
+        })
+    })
+    test('return author with most likes', () => {
+        expect(listHelper.mostLikes(blogs)).toStrictEqual({
+            author: 'Edsger W. Dijkstra',
+            likes: 17
+        })
+    })
+})
 describe('api testing',  () => {
 
     beforeEach(async () => {
