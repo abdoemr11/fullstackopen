@@ -13,17 +13,25 @@ const App = () => {
       setBlogs(await blogService.getAll())
     }
     getAllBlogs()
+    const localUser = JSON.parse(localStorage.getItem('user'))
+    if(localUser)
+      setUser(localUser)
   }, [])
-  const handleLoginUser = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
     console.log(username, password)
     try {
-      const user = await login.login({username, password})
-      console.log(user)
-      setUser(user)
+      const loggedUser = await login.login({username, password})
+      console.log(loggedUser)
+      setUser(loggedUser)
+      localStorage.setItem('user', JSON.stringify(loggedUser))
     } catch (e) {
       console.log(e.response.data)
     }
+  }
+  const handleLogout = () => {
+    localStorage.removeItem('user')
+    setUser(undefined)
   }
   return (
     <div>
@@ -32,7 +40,7 @@ const App = () => {
           <div>
             <h2>Login to application</h2>
             <form action=""
-                  onSubmit={handleLoginUser}
+                  onSubmit={handleLogin}
             >
               <label htmlFor="Username">username</label>
               <input type="input"
@@ -51,6 +59,7 @@ const App = () => {
           :
           <div>
             {`${user.name} logged In`}
+            <button onClick={handleLogout}>Log out</button>
             <h2>blogs</h2>
             {blogs.map(blog =>
                 <Blog key={blog.id} blog={blog} />
