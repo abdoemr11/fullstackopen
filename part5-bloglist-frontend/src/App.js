@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import login from "./services/login";
-import axios from "axios";
 import {Notification} from "./components/Notification";
+import {Toggable} from "./components/Toggable";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -90,28 +90,30 @@ const App = () => {
             <button onClick={handleLogout}>Log out</button>
 
             {/*create new blog form*/}
-          <div>
-            <h2>Create New </h2>
-            title:
-            <input type="text"
-                   onChange={({target})=>setNewTitle(target.value)}
+          <Toggable buttonLabel={'new blog'}>
+            <div>
+              <h2>Create New </h2>
+              title:
+              <input type="text"
+                     onChange={({target})=>setNewTitle(target.value)}
 
-            />
-            <br/>
-            author:
-            <input type="text"
-                   onChange={({target})=>setNewAuthor(target.value)}
+              />
+              <br/>
+              author:
+              <input type="text"
+                     onChange={({target})=>setNewAuthor(target.value)}
 
-            />
-            <br/>
-            url:
-            <input type="text"
-                   onChange={({target})=>setNewUrl(target.value)}
+              />
+              <br/>
+              url:
+              <input type="text"
+                     onChange={({target})=>setNewUrl(target.value)}
 
-            />
-            <br/>
-            <button onClick={handleCreateBlog}>create</button>
-          </div>
+              />
+              <br/>
+              <button onClick={handleCreateBlog}>create</button>
+            </div>
+          </Toggable>
             <h2>blogs</h2>
             {blogs.map(blog =>
                 <Blog key={blog.id} blog={blog} />
