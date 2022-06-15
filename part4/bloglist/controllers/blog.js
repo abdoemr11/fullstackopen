@@ -17,7 +17,8 @@ blogRouter.post('/', async (request, response, next) => {
     //verify that user is logged in
 
 
-    if(!request.user.id) {
+    if(!request?.user?.id) {
+
         return response.status(401).json({ error: 'token missing or invalid' })
     }
 
