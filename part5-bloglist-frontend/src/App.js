@@ -5,23 +5,33 @@ import login from "./services/login";
 import {Notification} from "./components/Notification";
 import Toggable from "./components/Toggable";
 import {NewBlogForm} from "./components/NewBlogForm";
+import blog from "./components/Blog";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(undefined);
-
+  const [updated, setUpdated] = useState(false);
   const[notfi, setNotifi] = useState();
   useEffect(() => {
     const getAllBlogs =async () => {
-      setBlogs(await blogService.getAll())
+      setBlogs( await blogService.getAll())
     }
     getAllBlogs()
     const localUser = JSON.parse(localStorage.getItem('user'))
     if(localUser)
       setUser(localUser)
   }, [])
+  useEffect(()=>{
+    sortBlogs()
+
+  }, [updated])
+  const sortBlogs = () => {
+    const oldBlogs = [...blogs]
+    console.log(oldBlogs)
+    setBlogs(oldBlogs.sort((a,b)=> b.likes - a.likes))
+  }
   const handleLogin = async (e) => {
     e.preventDefault()
     console.log(username, password)
@@ -58,7 +68,6 @@ const App = () => {
       setTimeout(()=>{setNotifi(undefined)},3000)
 
 
-
     } catch (e) {
       console.log(e.response)
     }
@@ -70,7 +79,7 @@ const App = () => {
   const updateBlogLikes = async (updatedBlog) => {
     const newBlog = await blogService.update(updatedBlog);
     setBlogs(blogs.map(b=> b.id === newBlog.id? newBlog : b))
-
+    setUpdated(!updated)
   }
   const blogFormRef = useRef();
 
