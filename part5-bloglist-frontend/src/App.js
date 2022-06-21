@@ -81,6 +81,19 @@ const App = () => {
     setBlogs(blogs.map(b=> b.id === newBlog.id? newBlog : b))
     setUpdated(!updated)
   }
+  const removeBlog = async (id) => {
+    try {
+      blogService.setToken(user.token)
+      const result = await blogService.remove(id)
+      // console.log(result)
+      // if (result)
+        setBlogs(blogs.filter(b => b.id !== id))
+    } catch (e) {
+      console.log(e)
+    }
+
+
+  }
   const blogFormRef = useRef();
 
   return (
@@ -120,7 +133,9 @@ const App = () => {
           </Toggable>
             <h2>blogs</h2>
             {blogs.map(blog =>
-                <Blog key={blog.id} blog={blog} updateBlogLikes={updateBlogLikes} />
+                <Blog key={blog.id} blog={blog} updateBlogLikes={updateBlogLikes}
+                      removeBlog={removeBlog}
+                />
             )}
           </div>
 

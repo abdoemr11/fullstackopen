@@ -55,9 +55,11 @@ blogRouter.post('/', async (request, response, next) => {
 })
 blogRouter.delete('/:id', async (request, response,next) => {
     try {
-
         const user = request.user
-        if(!user.id || blog.user.toString() !== user.id.toString()) {
+        console.log(user)
+        const blog = await Blog.findById(request.params.id)
+        console.log(blog)
+        if(!user?.id || blog.user.toString() !== user.id.toString()) {
             return response.status(401).json({ error: 'You don\'t have permision to delete this blog' })
         }
         await blog.deleteOne()

@@ -1,5 +1,5 @@
 import {useState} from "react";
-const Blog = ({blog, updateBlogLikes}) => {
+const Blog = ({blog, updateBlogLikes, removeBlog}) => {
   const [isFullShow, setFullShow] = useState(false)
   let buttonText = isFullShow? "hide": "view"
   const blogStyle = {
@@ -9,6 +9,12 @@ const Blog = ({blog, updateBlogLikes}) => {
     borderWidth: 1,
     marginBottom: 5
   }
+
+  const handleRemove = () => {
+    if(window.confirm("Are you sure you want to delete this blog"))
+      removeBlog(blog.id)
+  }
+
   return(
 
       <div style={blogStyle}>
@@ -25,6 +31,7 @@ const Blog = ({blog, updateBlogLikes}) => {
               </div>: ""
 
         }
+        <button onClick={handleRemove}>remove</button>
       </div>
   )
 }
