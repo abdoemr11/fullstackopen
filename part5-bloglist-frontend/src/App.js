@@ -1,18 +1,17 @@
-import { useState, useEffect } from 'react'
+import {useState, useEffect, useRef} from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import login from "./services/login";
 import {Notification} from "./components/Notification";
-import {Toggable} from "./components/Toggable";
+import Toggable from "./components/Toggable";
+import {NewBlogForm} from "./components/NewBlogForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(undefined);
-  const[newTitle, setNewTitle] = useState('');
-  const[newAuthor, setNewAuthor] = useState('');
-  const[newUrl, setNewUrl] = useState('');
+
   const[notfi, setNotifi] = useState();
   useEffect(() => {
     const getAllBlogs =async () => {
@@ -31,6 +30,7 @@ const App = () => {
       setNotifi({type: "Success", msg:"You Logged In successfully"});
       setTimeout(()=>{setNotifi(undefined)},3000)
       setUser(loggedUser)
+      blogService.setToken(user.token)
       localStorage.setItem('user', JSON.stringify(loggedUser))
     } catch (e) {
       setNotifi({type:"Error", msg:e.response.data.error})
@@ -45,20 +45,34 @@ const App = () => {
     setUser(undefined)
   }
 
-  const handleCreateBlog = async () =>{
+  const createNewBlog = async (newTitle, newAuthor, newUrl) =>{
+    console.log(`${newTitle }     ${newAuthor}     ${newUrl}`)
+    console.log(blogFormRef)
 
     try {
-      blogService.setToken(user.token)
-      console.log(newTitle)
-      await blogService.create({title: newTitle, author: newAuthor, url: newUrl});
-      console.log('created new blog successuflly');
-      setNewUrl('');
-      setNewAuthor('');
-      setNewTitle('');
+      blogService.setToken(user.token);
+      const result = await blogService.create({title: newTitle, author: newAuthor, url: newUrl});
+      console.log(result)
+      setBlogs(blogs.concat(result))
+      setNotifi({type: "Success", msg:"You Created a blog"});
+      setTimeout(()=>{setNotifi(undefined)},3000)
+
+
+
     } catch (e) {
       console.log(e.response)
     }
   }
+  // There is an obvious logic error here
+  // When we press the like button we must keep track of who liked the blog
+  // Hence in the database there should be somekind of many to many relationship
+  // between the users and the posts they liked
+  const updateBlogLikes = async (updatedBlog) => {
+    const newBlog = await blogService.update(updatedBlog);
+    setBlogs(blogs.map(b=> b.id === newBlog.id? newBlog : b))
+
+  }
+  const blogFormRef = useRef();
 
   return (
     <div>
@@ -91,32 +105,13 @@ const App = () => {
 
             {/*create new blog form*/}
           <Toggable buttonLabel={'new blog'}>
-            <div>
-              <h2>Create New </h2>
-              title:
-              <input type="text"
-                     onChange={({target})=>setNewTitle(target.value)}
-
-              />
-              <br/>
-              author:
-              <input type="text"
-                     onChange={({target})=>setNewAuthor(target.value)}
-
-              />
-              <br/>
-              url:
-              <input type="text"
-                     onChange={({target})=>setNewUrl(target.value)}
-
-              />
-              <br/>
-              <button onClick={handleCreateBlog}>create</button>
-            </div>
+            <NewBlogForm createNewBlog={createNewBlog}
+                          refs={blogFormRef}
+            />
           </Toggable>
             <h2>blogs</h2>
             {blogs.map(blog =>
-                <Blog key={blog.id} blog={blog} />
+                <Blog key={blog.id} blog={blog} updateBlogLikes={updateBlogLikes} />
             )}
           </div>
 

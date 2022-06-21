@@ -66,7 +66,7 @@ blogRouter.delete('/:id', async (request, response,next) => {
         next(exception)
     }
 })
-blogRouter.put('/api/blogs/:id', async (request, response, next) => {
+blogRouter.put('/:id', async (request, response, next) => {
     const blog = request.body
     //check if the blog contain the required attributes
 
