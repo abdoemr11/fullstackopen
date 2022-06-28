@@ -13,7 +13,7 @@ module.exports = {
     'ecmaFeatures': {
       'jsx': true
     },
-    'ecmaVersion': 2018,
+    'ecmaVersion': 2020,
     'sourceType': 'module'
   },
   'plugins': [
@@ -22,7 +22,7 @@ module.exports = {
   'rules': {
     'indent': [
       'error',
-      4
+      2
     ],
     'linebreak-style': [
       'error',
