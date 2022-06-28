@@ -10,7 +10,6 @@ const Blog = ({blog, updateBlogLikes, removeBlog}) => {
     borderWidth: 1,
     marginBottom: 5
   }
-
   const handleRemove = () => {
     if(window.confirm("Are you sure you want to delete this blog"))
       removeBlog(blog.id)
@@ -19,11 +18,12 @@ const Blog = ({blog, updateBlogLikes, removeBlog}) => {
   return(
 
       <div style={blogStyle}>
-        {blog.title} By {blog.author} <button onClick={()=>setFullShow(!isFullShow)}>{buttonText}</button>
+        <span>{blog.title}</span> By <span>{blog.author}</span>
+        <button onClick={()=>setFullShow(!isFullShow)}>{buttonText}</button>
         {
           isFullShow
               ?<div>
-                <p>blog.url</p>
+                <p>{blog.url}</p>
                 <p>likes {blog.likes}
                   <button
                       onClick={()=> updateBlogLikes({...blog, likes: blog?.likes+1, user: blog?.user?.id})}>

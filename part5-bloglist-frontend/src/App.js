@@ -5,7 +5,6 @@ import login from './services/login'
 import { Notification } from './components/Notification'
 import Toggable from './components/Toggable'
 import { NewBlogForm } from './components/NewBlogForm'
-import blog from './components/Blog'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -24,7 +23,7 @@ const App = () => {
       setUser(localUser)
   }, [])
   useEffect(() => {
-    // sortBlogs()
+    sortBlogs()
 
   }, [updated])
   const sortBlogs = () => {
@@ -84,9 +83,7 @@ const App = () => {
   const removeBlog = async (id) => {
     try {
       blogService.setToken(user.token)
-      const result = await blogService.remove(id)
-      // console.log(result)
-      // if (result)
+      await blogService.remove(id)
       setBlogs(blogs.filter(b => b.id !== id))
     } catch (e) {
       console.log(e)
