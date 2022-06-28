@@ -1,4 +1,5 @@
 import {useState} from "react";
+import PropTypes from "prop-types";
 const Blog = ({blog, updateBlogLikes, removeBlog}) => {
   const [isFullShow, setFullShow] = useState(false)
   let buttonText = isFullShow? "hide": "view"
@@ -34,5 +35,8 @@ const Blog = ({blog, updateBlogLikes, removeBlog}) => {
         <button onClick={handleRemove}>remove</button>
       </div>
   )
+}
+Blog.propTypes = {
+  updateBlogLikes: PropTypes.func.isRequired
 }
 export default Blog

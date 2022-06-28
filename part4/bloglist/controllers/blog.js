@@ -4,7 +4,7 @@ const blogRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 
 blogRouter.get('/', async (request, response) => {
-
+    console.log('Getting all blogs')
     const blogs = await Blog
         .find({}).populate('user', { username: 1, name: 1 })
     response.json(blogs)
