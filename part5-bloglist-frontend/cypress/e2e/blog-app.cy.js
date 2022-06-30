@@ -36,4 +36,47 @@ describe('Blog App', function () {
         .and('have.css', 'color', 'rgb(255, 0, 0)')
     })
   })
+  describe('When user logged in', function () {
+    let loggedUser
+    beforeEach(function () {
+      const user ={
+        'username': 'janedoe',
+        'password': '123'
+      }
+      cy.request('POST', 'http://localhost:3003/api/login', user).then(function (res){
+        loggedUser = res.body
+        localStorage.setItem('user', JSON.stringify(loggedUser))
+        cy.visit('http://localhost:3000')
+      })
+    })
+    it('Blog can be created', function () {
+      cy.contains('new blog').click()
+      cy.get('[placeholder=title]').type('My Awesome blog')
+      cy.get('[placeholder=author]').type('ahmed saber')
+      cy.get('[placeholder=url]').type('mostalah.com')
+      cy.get('[data-cy=create-blog-button]').click()
+      cy.get('[data-cy=notification]')
+        .should('contain','You Created a blog')
+        .should('have.css', 'color', 'rgb(0, 128, 0)')
+      cy.contains('My Awesome blog')
+    })
+    describe('and A blog has been created', function () {
+      beforeEach(function (){
+        cy.createBlog('My Awesome blog', 'ahmed saber', 'mostalah.com', loggedUser.token)
+
+      })
+      it.only('User can like a blog', function (){
+
+        cy.contains('view').click()
+        cy.contains('like').click()
+        cy.wait(2000)
+        cy.contains('like').click()
+
+
+        cy.contains('likes').contains('2')
+      })
+    })
+
+
+  })
 })

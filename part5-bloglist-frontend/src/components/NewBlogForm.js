@@ -38,7 +38,9 @@ export const NewBlogForm = ({ createNewBlog }) => {
 
       />
       <br/>
-      <button onClick={handleCreateBlog}>create</button>
+      <button onClick={handleCreateBlog}
+        data-cy='create-blog-button'
+      >create</button>
     </div>
   )
 }

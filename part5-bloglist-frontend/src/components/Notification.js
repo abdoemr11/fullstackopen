@@ -14,11 +14,11 @@ export const Notification = ({ notification }) => {
   if (notification)
     console.log(notification)
   return(
-    <div data-cy={'notification'}>
+    <div >
       {
         notification
           ?<p style={styleType}
-
+            data-cy={'notification'}
           >{notification.msg}
 
           </p>
