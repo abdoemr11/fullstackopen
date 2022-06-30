@@ -17,7 +17,7 @@ const Blog = ({ blog, updateBlogLikes, removeBlog }) => {
 
   return(
 
-    <div style={blogStyle}>
+    <div style={blogStyle} data-cy='blog'>
       <span>{blog.title}</span> By <span>{blog.author}</span>
       <button onClick={() => setFullShow(!isFullShow)}>{buttonText}</button>
       {

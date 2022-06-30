@@ -89,6 +89,8 @@ const App = () => {
       setBlogs(blogs.filter(b => b.id !== id))
     } catch (e) {
       console.log(e)
+      setNotifi({ type:'Error', msg:e.response.data.error })
+      setTimeout(() => {setNotifi(undefined)},3000)
     }
 
 

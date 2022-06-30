@@ -36,7 +36,15 @@ Cypress.Commands.add('login', (user) => {
   cy.request('POST', 'http://localhost:3003/api/login', user).then(function (res){
     const loggedUser = res.body
     localStorage.setItem('user', JSON.stringify(loggedUser))
-    cy.visit('http://localhost:3000')
+    cy.visit('http://localhost:3000').then(result => {
+      console.log(loggedUser)
+      return loggedUser
+    } )
+
   })
 })
-// Cypress.Commands.add('logut', )
+Cypress.Commands.add('logout',() => {
+  localStorage.removeItem('user')
+  cy.visit('http://localhost:3000')
+
+})
