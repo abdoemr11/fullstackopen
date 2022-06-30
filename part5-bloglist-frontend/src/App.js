@@ -36,11 +36,13 @@ const App = () => {
     console.log(username, password)
     try {
       const loggedUser = await login.login({ username, password })
+      console.log(loggedUser)
+      setUser(loggedUser)
+      blogService.setToken(loggedUser.token)
+      localStorage.setItem('user', JSON.stringify(loggedUser))
       setNotifi({ type: 'Success', msg:'You Logged In successfully' })
       setTimeout(() => {setNotifi(undefined)},3000)
-      setUser(loggedUser)
-      blogService.setToken(user.token)
-      localStorage.setItem('user', JSON.stringify(loggedUser))
+
     } catch (e) {
       setNotifi({ type:'Error', msg:e.response.data.error })
       setTimeout(() => {setNotifi(undefined)},3000)
@@ -98,7 +100,9 @@ const App = () => {
       <Notification notification={notfi}/>
       {!user
         ?
-        <div>
+        <div
+          data-cy={'login-form'}
+        >
           <h2>Login to application</h2>
           <form action=""
             onSubmit={handleLogin}
@@ -106,15 +110,17 @@ const App = () => {
             <label htmlFor="Username">username</label>
             <input type="input"
               name="Username"
+              id="username"
               onChange={({ target }) => setUserName(target.value)}
             />
             <br/>
             <label htmlFor="Password">password</label>
             <input type="password"
               name="Password"
+              id="password"
               onChange={({ target }) => setPassword(target.value)}
             />
-            <input type="submit"/>
+            <input type="submit" id="login-button"/>
           </form>
         </div>
         :

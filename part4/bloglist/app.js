@@ -9,7 +9,7 @@ const userRouter = require('./controllers/user')
 const loginRouter = require('./controllers/login')
 const middleware = require('./middleware')
 const { userExtractor } = require('./middleware')
-
+const testingRouter = require('./controllers/testing')
 
 
 // eslint-disable-next-line no-undef
@@ -28,6 +28,10 @@ app.use(middleware.tokenExtractor)
 app.use('/api/blogs',middleware.userExtractor,blogRouter)
 app.use(userRouter)
 app.use('/api/login', loginRouter)
+if(process.env.NODE_ENV === 'test') {
+    console.log('adding the testing router')
+    app.use('/api/testing', testingRouter)
+}
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 //TODO middleware for error handling

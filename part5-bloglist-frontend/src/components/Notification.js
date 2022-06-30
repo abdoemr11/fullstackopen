@@ -14,14 +14,18 @@ export const Notification = ({ notification }) => {
   if (notification)
     console.log(notification)
   return(
-    <>
+    <div data-cy={'notification'}>
       {
         notification
-          ?<p style={styleType}>{notification.msg}</p>
+          ?<p style={styleType}
+
+          >{notification.msg}
+
+          </p>
           :''
       }
 
-    </>
+    </div>
 
   )
 }
