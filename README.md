@@ -8,3 +8,9 @@ I think in a future year FSO can use cypress instead of [testing-library](https:
 
 Cypress appear to be very useful when it throw an cirtical error in the login process that I didn't notice before
 and react didn't complain about it.
+
+## Part6
+In exercise 6.5 I implemented the order anecdotes behaviour when voting
+this lead to instant update of the component which is not quite good, 
+so I could use setTimout out like [here](https://www.pluralsight.com/guides/how-to-fire-periodic-actions-using-settimeout-and-dispatcher-in-redux)  
+I should wait until finish Part6, maybe there is a trick here.
