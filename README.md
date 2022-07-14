@@ -19,3 +19,19 @@ I should wait until finish Part6, maybe there is a trick here.
 In redux createSlice if the initial state is null you must return the new state 
 instead of mutating it otherwise it won't work
 [see here](https://stackoverflow.com/questions/62966863/a-case-reducer-on-a-non-draftable-value-must-not-return-undefined)
+
+Regrade to remove the notification after x seconds, There was a proplem 
+if you repeatedly press the button, we will end up with
+multiple dispatch of removeNotification action. 
+This happens due to each instance of set-timeout will run at 
+asynchronously so for example If you vote anecdote 
+and after 4 seconds you voted another one the notification
+will be shown for only 1 seconds instead of one.
+
+The solution is to remember the timer instance and 
+recreate it at every button handler. useState is not 
+suitable for this because every change to it cause 
+the component to rerender, useRef is the antidote.
+
+Using this technique we can handle the problem of 
+immediate sort of anecdotes when voting them.

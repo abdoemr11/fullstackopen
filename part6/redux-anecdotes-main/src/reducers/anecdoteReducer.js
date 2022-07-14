@@ -31,10 +31,13 @@ const anecdoteSlice = createSlice({
       anectodeToChange.votes++;
     },
     createAnec(state, action) {
-      state.push(action.payload);
+      state.push(asObject(action.payload));
+    },
+    sortAnec(state, action) {
+      state.sort((a,b)=> b.votes - a.votes )
     }
   }
 })
 
 export default anecdoteSlice.reducer;
-export const {voteAnec, createAnec} = anecdoteSlice.actions;
+export const {voteAnec, createAnec, sortAnec} = anecdoteSlice.actions;
