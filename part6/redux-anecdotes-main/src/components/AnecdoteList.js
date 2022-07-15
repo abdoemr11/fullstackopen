@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
-import {sortAnec, voteAnec} from "../reducers/anecdoteReducer";
-import {removeNotification, setNotification} from "../reducers/notificationReducer";
+import { sortAnec, voteAnec, voteAnecdote} from "../reducers/anecdoteReducer";
 import {useRef, useState} from "react";
+import {setNotificationForTime} from "../reducers/notificationReducer";
 
 
 
@@ -16,15 +16,10 @@ const AnecdoteList = () => {
   const sortTimerRef = useRef()
   // console.log(anecdotes)
   const handleVoteAnce = (anecdote) => {
-    dispatch(voteAnec(anecdote.id));
-    dispatch(setNotification(anecdote.content));
-    // dispatch(removeNotification(null))
-    clearTimeout(notificationTimerRef.current);
-    clearTimeout(sortTimerRef.current);
+    dispatch(voteAnecdote(anecdote));
 
-    notificationTimerRef.current = setTimeout(()=> {
-      dispatch(removeNotification(null))
-    }, 5000)
+    clearTimeout(sortTimerRef.current);
+    dispatch(setNotificationForTime(anecdote.content, 3))
     sortTimerRef.current = setTimeout(()=>{
       dispatch(sortAnec())
     }, 3000)

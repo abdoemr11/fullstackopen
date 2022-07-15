@@ -11,7 +11,7 @@ const asObject = (anecdote) => {
   }
 }
 const getAll = async () => {
-  // console.log('why not working')
+  console.log('why not working')
   const result = await axios.get('http://localhost:3001/anecdotes')
   // console.log(result)
   return result.data
@@ -21,4 +21,10 @@ const createNew = async (content) => {
   const result = await axios.post(`${baseUrl}`,newAnec )
   return result.data
 }
-export default {getAll, createNew}
+const update = async (anecdote) => {
+  console.log('updating')
+  const result = await axios.put(`${baseUrl}/${anecdote.id}`, anecdote)
+  console.log(result.data)
+  return result.data
+}
+export default {getAll, createNew, update}
