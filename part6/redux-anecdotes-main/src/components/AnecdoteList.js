@@ -7,10 +7,10 @@ import {setNotificationForTime} from "../reducers/notificationReducer";
 
 const AnecdoteList = () => {
   const dispatch = useDispatch();
-  const anecdotes = useSelector(a=> {
-    if(a.filter==="")
-      return a.anecdote
-    return a.anecdote.filter(an=> an.content.toLowerCase().includes(a.filter) )
+  const anecdotes = useSelector(state=> {
+    if(state.filter==="")
+      return state.anecdote
+    return state.anecdote.filter(an=> an.content.toLowerCase().includes(state.filter) )
   })
   const notificationTimerRef = useRef()
   const sortTimerRef = useRef()

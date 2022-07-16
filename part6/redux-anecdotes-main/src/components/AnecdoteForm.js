@@ -1,6 +1,5 @@
-import {appendAnec, createAnecdote} from "../reducers/anecdoteReducer";
-import {useDispatch} from "react-redux";
-import anecdoteService from '../services/anecdotes'
+import { createAnecdote} from "../reducers/anecdoteReducer";
+import {connect, useDispatch} from "react-redux";
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
 
@@ -19,4 +18,12 @@ const AnecdoteForm = () => {
   )
 }
 
-export default AnecdoteForm;
+const mapDispatchToProps = dispatch => {
+  return ({
+    createAnecdote : content => {
+      dispatch(createAnecdote(content))
+    }
+  })
+}
+const connectedAnecdoteForm = connect(null, mapDispatchToProps)(AnecdoteForm)
+export default connectedAnecdoteForm;
