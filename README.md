@@ -35,3 +35,9 @@ the component to rerender, useRef is the antidote.
 
 Using this technique we can handle the problem of 
 immediate sort of anecdotes when voting them.
+
+link for more redux store:   
+[fundamental of redux store](https://egghead.io/courses/fundamentals-of-redux-course-from-dan-abramov-bd5cc867)
+[context API](https://reactjs.org/docs/context.html)
+[React Hooks vs Redux](https://www.simplethread.com/cant-replace-redux-with-hooks/)
+[How To useContext With useReducer](https://hswolff.com/blog/how-to-usecontext-with-usereducer/)
