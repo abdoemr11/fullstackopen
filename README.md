@@ -41,3 +41,34 @@ link for more redux store:
 [context API](https://reactjs.org/docs/context.html)
 [React Hooks vs Redux](https://www.simplethread.com/cant-replace-redux-with-hooks/)
 [How To useContext With useReducer](https://hswolff.com/blog/how-to-usecontext-with-usereducer/)
+
+
+## Part 7 
+
+### custom hooks 
+here are additional resources of hooks: 
+- https://github.com/rehooks/awesome-react-hooks
+- https://usehooks.com/
+- https://overreacted.io/why-do-hooks-rely-on-call-order/
+
+I found out that destructing object differ from array
+the issue began in P7.6 when I needed to exclude 
+the reset parameter from the return value
+unfortunately object destructing doesn't work as
+expected when there is a function in the object<br/>
+In the next code 
+```js
+const {resetContent, ...content} = useField('content')
+```
+`content` here will equal the whole returned object 
+from the hook where `resetContent` will be undefined.  
+I thought something like this should work
+```js
+const {resetContent:reset, ...content} = useField('content')
+```
+but javascript has a different weird opinion
+```js
+const {reset:resetContent, ...content} = useField('content')
+```
+the original field should be on the right side.
+Thanks for Nina for her [answer](https://stackoverflow.com/a/57065418)
