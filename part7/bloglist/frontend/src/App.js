@@ -8,20 +8,22 @@ import { NewBlogForm } from './components/NewBlogForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { addNotification } from './reducers/notificationReducer'
 import { createNewBlog, getAllBlog } from './reducers/BlogReducer'
+import { setUser } from './reducers/userReducer'
 
 const App = () => {
 
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blog)
   const notfi = useSelector(state => state.notification)
+  const user = useSelector(state => state.user)
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(undefined)
+
   useEffect(() => {
     dispatch(getAllBlog())
     const localUser = JSON.parse(localStorage.getItem('user'))
     if(localUser)
-      setUser(localUser)
+      dispatch(setUser(localUser))
   }, [])
 
 
@@ -31,7 +33,7 @@ const App = () => {
     try {
       const loggedUser = await login.login({ username, password })
       console.log(loggedUser)
-      setUser(loggedUser)
+      dispatch(setUser(loggedUser))
       blogService.setToken(loggedUser.token)
       localStorage.setItem('user', JSON.stringify(loggedUser))
       dispatch(addNotification({ type: 'Success', msg:'You Logged In successfully' }))
@@ -44,7 +46,7 @@ const App = () => {
   const handleLogout = () => {
     localStorage.removeItem('user')
     dispatch(addNotification({ type: 'Success', msg:'You Logged Out' }, 3))
-    setUser(undefined)
+    dispatch(setUser(null))
   }
 
   const handleNewBlog =  (newTitle, newAuthor, newUrl) => {

@@ -1,10 +1,11 @@
 import { useState } from 'react'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { removeBlog, updateBlog } from '../reducers/BlogReducer'
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog }) => {
   const [isFullShow, setFullShow] = useState(false)
   const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
   let buttonText = isFullShow? 'hide': 'view'
   const blogStyle = {
     paddingTop: 10,
