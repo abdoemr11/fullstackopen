@@ -1,23 +1,29 @@
-import { useState, useEffect, useRef } from 'react'
+import {  useEffect, useRef } from 'react'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
-import login from './services/login'
 import { Notification } from './components/Notification'
 import Toggable from './components/Toggable'
 import { NewBlogForm } from './components/NewBlogForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { addNotification } from './reducers/notificationReducer'
 import { createNewBlog, getAllBlog } from './reducers/BlogReducer'
-import { setUser } from './reducers/userReducer'
+import { setUser } from './reducers/loggedUserReducer'
+import * as PropTypes from 'prop-types'
+import { LoginForm } from './components/LoginForm'
 
+
+
+LoginForm.propTypes = {
+  onSubmit: PropTypes.func,
+  onChange: PropTypes.func,
+  onChange1: PropTypes.func
+}
 const App = () => {
 
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blog)
   const notfi = useSelector(state => state.notification)
-  const user = useSelector(state => state.user)
-  const [username, setUserName] = useState('')
-  const [password, setPassword] = useState('')
+  const user = useSelector(state => state.loggedUser)
+
 
   useEffect(() => {
     dispatch(getAllBlog())
@@ -27,22 +33,7 @@ const App = () => {
   }, [])
 
 
-  const handleLogin = async (e) => {
-    e.preventDefault()
-    console.log(username, password)
-    try {
-      const loggedUser = await login.login({ username, password })
-      console.log(loggedUser)
-      dispatch(setUser(loggedUser))
-      blogService.setToken(loggedUser.token)
-      localStorage.setItem('user', JSON.stringify(loggedUser))
-      dispatch(addNotification({ type: 'Success', msg:'You Logged In successfully' }))
 
-    } catch (e) {
-      dispatch(addNotification({ type:'Error', msg:e.response.data.error }))
-
-    }
-  }
   const handleLogout = () => {
     localStorage.removeItem('user')
     dispatch(addNotification({ type: 'Success', msg:'You Logged Out' }, 3))
@@ -65,29 +56,7 @@ const App = () => {
       <Notification notification={notfi}/>
       {!user
         ?
-        <div
-          data-cy={'login-form'}
-        >
-          <h2>Login to application</h2>
-          <form action=""
-            onSubmit={handleLogin}
-          >
-            <label htmlFor="Username">username</label>
-            <input type="input"
-              name="Username"
-              id="username"
-              onChange={({ target }) => setUserName(target.value)}
-            />
-            <br/>
-            <label htmlFor="Password">password</label>
-            <input type="password"
-              name="Password"
-              id="password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-            <input type="submit" id="login-button"/>
-          </form>
-        </div>
+        <LoginForm />
         :
         <div>
           {`${user.name} logged In`}
