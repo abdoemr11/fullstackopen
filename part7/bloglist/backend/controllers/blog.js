@@ -71,7 +71,7 @@ blogRouter.delete('/:id', async (request, response,next) => {
 blogRouter.put('/:id', async (request, response, next) => {
     const blog = request.body
     //check if the blog contain the required attributes
-
+    console.log('printing the blog',blog)
     const mustHaveProps = ['title', 'author', 'url', 'likes', 'id']
     let isValidBlog = true
     for (let p of mustHaveProps) {
@@ -82,10 +82,16 @@ blogRouter.put('/:id', async (request, response, next) => {
         }
     }
     if(isValidBlog) {
+        console.log('before updating')
+        try {
+            const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+            console.log('updated blog',updatedBlog)
+            response.json(updatedBlog)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
 
-        const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-        console.log(updatedBlog)
-        response.json(updatedBlog)
     } else {
         response.status(400).end()
     }

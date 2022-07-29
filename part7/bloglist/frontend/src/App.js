@@ -17,22 +17,14 @@ const App = () => {
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(undefined)
-  const [updated, setUpdated] = useState(false)
   useEffect(() => {
     dispatch(getAllBlog())
     const localUser = JSON.parse(localStorage.getItem('user'))
     if(localUser)
       setUser(localUser)
   }, [])
-  useEffect(() => {
-    sortBlogs()
 
-  }, [updated])
-  const sortBlogs = () => {
-    const oldBlogs = [...blogs]
-    console.log(oldBlogs)
-    // setBlogs(oldBlogs.sort((a,b) => b.likes - a.likes))
-  }
+
   const handleLogin = async (e) => {
     e.preventDefault()
     console.log(username, password)
@@ -62,12 +54,7 @@ const App = () => {
   // When we press the like button we must keep track of who liked the blog
   // Hence in the database there should be somekind of many to many relationship
   // between the users and the posts they liked
-  const updateBlogLikes = async (updatedBlog) => {
-    const newBlog = await blogService.update(updatedBlog)
-    // setBlogs(blogs.map(b => b.id === newBlog.id? newBlog : b))
-    dispatch(addNotification({ type: 'Success', msg: `You have liked ${ newBlog.title } ` }))
-    setUpdated(!updated)
-  }
+
 
   const blogFormRef = useRef()
 
@@ -112,8 +99,8 @@ const App = () => {
           </Toggable>
           <h2>blogs</h2>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} updateBlogLikes={updateBlogLikes}
-
+            <Blog key={blog.id} blog={blog}
+              user={user}
             />
           )}
         </div>

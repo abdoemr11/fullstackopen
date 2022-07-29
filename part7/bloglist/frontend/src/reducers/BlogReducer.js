@@ -9,11 +9,19 @@ const blogSlicer = createSlice({
     setBlogs(state, action) {
       return action.payload
     },
-    appendBlogs(state, action) {
+    appendBlog(state, action) {
       return state.concat(action.payload)
     },
     deleteBlog(state, action) {
       return state.filter(b => b.id !== action.payload)
+    },
+    replaceBlog(state, action){
+      // console.log(action.)
+      return state.map(b => b.id === action.payload.id? action.payload : b)
+    },
+    // eslint-disable-next-line no-unused-vars
+    sortBlogs(state, action) {
+      state.sort((a,b) => b.likes - a.likes)
     }
   }
 
@@ -36,6 +44,18 @@ export const removeBlog = (id, token) => {
     }
   }
 }
+let sortTimeout
+export const updateBlog = (updatedBlog) => {
+  return async dispatch => {
+    const newBlog = await blogService.update(updatedBlog)
+    dispatch(replaceBlog(newBlog))
+    clearTimeout(sortTimeout)
+    sortTimeout = setTimeout(() => dispatch(sortBlogs()),3000)
+
+    dispatch(addNotification({ type: 'Success', msg: `You have liked ${ newBlog.title } ` }))
+
+  }
+}
 export const createNewBlog = (newTitle,newAuthor, newUrl, token) => {
   return async dispatch => {
     console.log(`${newTitle }     ${newAuthor}     ${newUrl}`)
@@ -44,7 +64,7 @@ export const createNewBlog = (newTitle,newAuthor, newUrl, token) => {
       blogService.setToken(token)
       const result = await blogService.create({ title: newTitle, author: newAuthor, url: newUrl })
       console.log(result)
-      dispatch(appendBlogs(result))
+      dispatch(appendBlog(result))
       dispatch(addNotification({ type: 'Success', msg:'You Created a blog' }))
 
 
@@ -54,4 +74,4 @@ export const createNewBlog = (newTitle,newAuthor, newUrl, token) => {
   }
 }
 export default blogSlicer.reducer
-export const { setBlogs, appendBlogs, deleteBlog }  = blogSlicer.actions
+export const { setBlogs, appendBlog, deleteBlog, replaceBlog, sortBlogs }  = blogSlicer.actions

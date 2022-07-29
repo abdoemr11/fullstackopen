@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import PropTypes from 'prop-types'
+
 import { useDispatch } from 'react-redux'
-import { removeBlog } from '../reducers/BlogReducer'
-const Blog = ({ blog, updateBlogLikes }) => {
+import { removeBlog, updateBlog } from '../reducers/BlogReducer'
+const Blog = ({ blog, user }) => {
   const [isFullShow, setFullShow] = useState(false)
   const dispatch = useDispatch()
   let buttonText = isFullShow? 'hide': 'view'
@@ -14,11 +14,17 @@ const Blog = ({ blog, updateBlogLikes }) => {
     marginBottom: 5
   }
   const handleRemove = () => {
+    // console.log(user)
+
     if(window.confirm('Are you sure you want to delete this blog'))
-      dispatch(removeBlog(blog.id)
+      dispatch(removeBlog(blog.id, user.token)
       )
   }
-
+  const handleUpdateBlogLike = () => {
+    console.log('incrementing likes')
+    console.log(blog)
+    dispatch(updateBlog({ ...blog, user: blog.user.id, likes: blog.likes+1 }))
+  }
   return(
 
     <div style={blogStyle} data-cy='blog'>
@@ -30,7 +36,7 @@ const Blog = ({ blog, updateBlogLikes }) => {
             <p>{blog.url}</p>
             <p>likes {blog.likes}
               <button
-                onClick={() => updateBlogLikes({ ...blog, likes: blog?.likes+1, user: blog?.user?.id })}>
+                onClick={() => handleUpdateBlogLike()}>
                     like</button></p>
             <p>{blog.user?.name}</p>
           </div>: ''
@@ -40,7 +46,5 @@ const Blog = ({ blog, updateBlogLikes }) => {
     </div>
   )
 }
-Blog.propTypes = {
-  updateBlogLikes: PropTypes.func.isRequired
-}
+
 export default Blog
