@@ -1,0 +1,22 @@
+{
+  "scripts": {
+    "dev": "NODE_ENV=dev nodemon index.js",
+    "test": "NODE_ENV=test jest --verbose",
+    "start:test": "NODE_ENV=test node index.js"
+  },
+  "devDependencies": {
+    "eslint": "^8.14.0",
+    "supertest": "^6.2.3"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "jest": "^28.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.3.1",
+    "nodemon": "^2.0.15"
+  }
+}
