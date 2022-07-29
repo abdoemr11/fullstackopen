@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-const Blog = ({ blog, updateBlogLikes, removeBlog }) => {
+import { useDispatch } from 'react-redux'
+import { removeBlog } from '../reducers/BlogReducer'
+const Blog = ({ blog, updateBlogLikes }) => {
   const [isFullShow, setFullShow] = useState(false)
+  const dispatch = useDispatch()
   let buttonText = isFullShow? 'hide': 'view'
   const blogStyle = {
     paddingTop: 10,
@@ -12,7 +15,8 @@ const Blog = ({ blog, updateBlogLikes, removeBlog }) => {
   }
   const handleRemove = () => {
     if(window.confirm('Are you sure you want to delete this blog'))
-      removeBlog(blog.id)
+      dispatch(removeBlog(blog.id)
+      )
   }
 
   return(

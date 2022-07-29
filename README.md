@@ -37,9 +37,9 @@ Using this technique we can handle the problem of
 immediate sort of anecdotes when voting them.
 
 link for more redux store:   
-[fundamental of redux store](https://egghead.io/courses/fundamentals-of-redux-course-from-dan-abramov-bd5cc867)
-[context API](https://reactjs.org/docs/context.html)
-[React Hooks vs Redux](https://www.simplethread.com/cant-replace-redux-with-hooks/)
+[fundamental of redux store](https://egghead.io/courses/fundamentals-of-redux-course-from-dan-abramov-bd5cc867)  
+[context API](https://reactjs.org/docs/context.html)  
+[React Hooks vs Redux](https://www.simplethread.com/cant-replace-redux-with-hooks/)  
 [How To useContext With useReducer](https://hswolff.com/blog/how-to-usecontext-with-usereducer/)
 
 
@@ -70,5 +70,9 @@ but javascript has a different weird opinion
 ```js
 const {reset:resetContent, ...content} = useField('content')
 ```
-the original field should be on the right side.
+the original field should be on the left side.<br/>
 Thanks for Nina for her [answer](https://stackoverflow.com/a/57065418)
+
+### Extending the bloglist
+prettier and eslint have common tasks but they are not the same
+I need to search more on this topic.
