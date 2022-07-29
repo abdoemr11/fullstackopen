@@ -6,6 +6,7 @@
   },
   "devDependencies": {
     "eslint": "^8.14.0",
+    "prettier": "2.7.1",
     "supertest": "^6.2.3"
   },
   "dependencies": {

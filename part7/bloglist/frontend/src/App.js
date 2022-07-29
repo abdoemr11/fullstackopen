@@ -5,14 +5,18 @@ import login from './services/login'
 import { Notification } from './components/Notification'
 import Toggable from './components/Toggable'
 import { NewBlogForm } from './components/NewBlogForm'
+import { useDispatch, useSelector } from 'react-redux'
+import { addNotification } from './reducers/notificationReducer'
 
 const App = () => {
+
   const [blogs, setBlogs] = useState([])
+  const dispatch = useDispatch()
+  const notfi = useSelector(state => state.notification)
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(undefined)
   const [updated, setUpdated] = useState(false)
-  const[notfi, setNotifi] = useState()
   useEffect(() => {
     const getAllBlogs =async () => {
       setBlogs( await blogService.getAll())
@@ -40,19 +44,16 @@ const App = () => {
       setUser(loggedUser)
       blogService.setToken(loggedUser.token)
       localStorage.setItem('user', JSON.stringify(loggedUser))
-      setNotifi({ type: 'Success', msg:'You Logged In successfully' })
-      setTimeout(() => {setNotifi(undefined)},3000)
+      dispatch(addNotification({ type: 'Success', msg:'You Logged In successfully' }))
 
     } catch (e) {
-      setNotifi({ type:'Error', msg:e.response.data.error })
-      setTimeout(() => {setNotifi(undefined)},3000)
+      dispatch(addNotification({ type:'Error', msg:e.response.data.error }))
 
     }
   }
   const handleLogout = () => {
     localStorage.removeItem('user')
-    setNotifi({ type: 'Success', msg:'You Logged Out' })
-    setTimeout(() => {setNotifi(undefined)},3000)
+    dispatch(addNotification({ type: 'Success', msg:'You Logged Out' }, 3))
     setUser(undefined)
   }
 
@@ -65,8 +66,7 @@ const App = () => {
       const result = await blogService.create({ title: newTitle, author: newAuthor, url: newUrl })
       console.log(result)
       setBlogs(blogs.concat(result))
-      setNotifi({ type: 'Success', msg:'You Created a blog' })
-      setTimeout(() => {setNotifi(undefined)},3000)
+      dispatch(addNotification({ type: 'Success', msg:'You Created a blog' }))
 
 
     } catch (e) {
@@ -80,6 +80,7 @@ const App = () => {
   const updateBlogLikes = async (updatedBlog) => {
     const newBlog = await blogService.update(updatedBlog)
     setBlogs(blogs.map(b => b.id === newBlog.id? newBlog : b))
+
     setUpdated(!updated)
   }
   const removeBlog = async (id) => {
@@ -89,8 +90,7 @@ const App = () => {
       setBlogs(blogs.filter(b => b.id !== id))
     } catch (e) {
       console.log(e)
-      setNotifi({ type:'Error', msg:e.response.data.error })
-      setTimeout(() => {setNotifi(undefined)},3000)
+      dispatch(addNotification({ type:'Error', msg:e.response.data.error }))
     }
 
 
