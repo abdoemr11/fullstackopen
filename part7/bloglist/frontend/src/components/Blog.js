@@ -5,7 +5,7 @@ import { removeBlog, updateBlog } from '../reducers/BlogReducer'
 const Blog = ({ blog }) => {
   const [isFullShow, setFullShow] = useState(false)
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
+  const user = useSelector(state => state.loggedUser)
   let buttonText = isFullShow? 'hide': 'view'
   const blogStyle = {
     paddingTop: 10,
@@ -24,6 +24,7 @@ const Blog = ({ blog }) => {
   const handleUpdateBlogLike = () => {
     console.log('incrementing likes')
     console.log(blog)
+    console.log('user', blog.user)
     dispatch(updateBlog({ ...blog, user: blog.user.id, likes: blog.likes+1 }))
   }
   return(

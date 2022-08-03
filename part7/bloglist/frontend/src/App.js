@@ -9,7 +9,7 @@ import { createNewBlog, getAllBlog } from './reducers/BlogReducer'
 import { setUser } from './reducers/loggedUserReducer'
 import { LoginForm } from './components/LoginForm'
 import { Route, Routes } from 'react-router-dom'
-import { Users } from './routes/users'
+import { Users } from './routes/Users'
 
 
 
@@ -71,7 +71,7 @@ const App = () => {
                   <h2>blogs</h2>
                   {blogs.map(blog =>
                     <Blog key={blog.id} blog={blog}
-                      user={user}
+
                     />
                   )}
                 </>
