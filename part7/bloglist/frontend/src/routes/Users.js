@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { getAllUsers } from '../reducers/usersReducer'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 export const Users = () => {
   const dispatch =useDispatch()
@@ -25,7 +26,10 @@ export const Users = () => {
           }}
           key={u.id}>
 
-          <span style = {{ flex: '1' }}>{u.name}</span>
+          <Link
+            to={u.id}
+            style = {{ flex: '1' }}
+          >{u.name}</Link>
           <span style={{ flex: '1' }}>{u.blogs.length}</span>
         </div>
       ))}

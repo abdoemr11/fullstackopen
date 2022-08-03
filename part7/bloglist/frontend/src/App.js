@@ -10,6 +10,7 @@ import { setUser } from './reducers/loggedUserReducer'
 import { LoginForm } from './components/LoginForm'
 import { Route, Routes } from 'react-router-dom'
 import { Users } from './routes/Users'
+import { User } from './routes/User'
 
 
 
@@ -61,6 +62,7 @@ const App = () => {
             <button onClick={handleLogout}>Log out</button>
             <Routes>
               <Route path='users' element={<Users/>}/>
+              <Route path='users/:userId' element={<User/>}/>
               <Route path='/' element={
                 <>
                   <Toggable buttonLabel={'new blog'}>
