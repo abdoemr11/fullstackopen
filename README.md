@@ -76,3 +76,7 @@ Thanks for Nina for her [answer](https://stackoverflow.com/a/57065418)
 ### Extending the bloglist
 prettier and eslint have common tasks but they are not the same
 I need to search more on this topic.
+
+> :warning: **I will ignore 7.18: 7.21 for now**
+
+## Part 8
