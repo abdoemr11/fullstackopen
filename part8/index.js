@@ -102,19 +102,36 @@ type Book {
     id: ID!,
     genres: [String]!
 },
+type Author {
+    name: String!,
+    id: ID!,
+    born: String, 
+    bookCount: Int!
+}
 type Query {
     bookCount: Int!, 
     authorCount: Int!,
-    allBooks: [Book!]!
+    allBooks: [Book!]!, 
+    allAuthors: [Author!]!
   }
 `
-console.log(books);
 const resolvers = {
   Query: {
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allBooks: () =>   (books)
-  }
+    allBooks: () =>   (books), 
+    allAuthors: () => 
+         authors.map((author)=>{
+            let bookCount = 0
+            books.forEach(b =>{
+                if (b.author == author.name)
+                bookCount++
+            })
+            return {...author, bookCount}
+        })
+    
+  }, 
+  
 }
 
 const server = new ApolloServer({
