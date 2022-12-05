@@ -82,3 +82,8 @@ I need to search more on this topic.
 ## Part 8
 [How To GraphQl](https://www.howtographql.com/basics/) has a good introduction videos to GQL
 ### 8.1 
+Apollo v4 has many changes compared to v3 
+the two main changes: 
+- the use of standalone server instead of using ApolloServer object directly
+- gql is no longer imported from @apollo/server but from graphql-tag
+for future reference check [this](https://www.apollographql.com/docs/apollo-server/migration/)
