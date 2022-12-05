@@ -80,3 +80,5 @@ I need to search more on this topic.
 > :warning: **I will ignore 7.18: 7.21 for now**
 
 ## Part 8
+[How To GraphQl](https://www.howtographql.com/basics/) has a good introduction videos to GQL
+### 8.1 
