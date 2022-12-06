@@ -121,7 +121,11 @@ type Mutation {
         author: String!,
         published: Int!,
         genres: [String!]!
-      ): Book
+      ): Book,
+    editAuthor(
+      name: String!,
+      setBornTo: Int!
+    ): Author
 }
 `
 const resolvers = {
@@ -165,6 +169,14 @@ const resolvers = {
         }
         books = books.concat(newBook)
         return newBook
+    },
+    editAuthor: (root, args) => {
+      let oldAuthor = authors.find(author => author.name === args.name)
+      if(!oldAuthor)
+        return null
+      let updatedAuthor = {...oldAuthor, born: args.setBornTo}
+      authors = authors.map(author => author.name === updatedAuthor.name? updatedAuthor: author)
+      return updatedAuthor
     }
   }
   
