@@ -2,7 +2,9 @@ import { useQuery } from "@apollo/client";
 import { ALL_AUTHORS } from "../services/queries";
 
 const Authors = ({show}) => {
-  const result = useQuery(ALL_AUTHORS)
+  const result = useQuery(ALL_AUTHORS, {
+    pollInterval: 2000,
+  })
   if (result.loading) {
     return <span>Looding ....!</span>
   }

@@ -153,19 +153,21 @@ const resolvers = {
   }, 
   Mutation: {
     addBook: (root, args) => {
+      console.log('creating new book');
         let authorName = args.author
         if(!authors.some(author => author.name === authorName)) {
             //Create new Author
             let newAuthor = {
                 name: authorName,
-                id: uuidv4, 
+                id: uuidv4(), 
                 born: null
             }
             authors = authors.concat(newAuthor)
         }
+        console.log('new id', uuidv4());
         const newBook = {
             ...args,
-            id: uuidv4
+            id: uuidv4()
         }
         books = books.concat(newBook)
         return newBook
