@@ -3,12 +3,16 @@ import { ALL_AUTHORS } from "../services/queries";
 
 const Authors = ({show}) => {
   const result = useQuery(ALL_AUTHORS)
+  if (result.loading) {
+    return <span>Looding ....!</span>
+  }
   let authors = result.data.allAuthors
   
   console.log(authors);
   if (!show) {
     return null
   }
+
   return (
     <div>
       <h2>authors</h2>
