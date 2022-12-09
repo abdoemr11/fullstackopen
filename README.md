@@ -90,6 +90,7 @@ for future reference check [this](https://www.apollographql.com/docs/apollo-serv
 > const { v4: uuidv4 } = require('uuid'); lol 
 
 ### 8.3 
-It is not recommended to put the business logic into the resolver.  
-There is a method for importing JSON to Mongodb directly instead to manually importing them one by one or using mutation 
+- It is not recommended to put the business logic into the resolver.  
+- There is a method for importing JSON to Mongodb directly instead to manually importing them one by one or using mutation 
 look [here](https://www.mongodb.com/compatibility/json-to-mongodb)
+- The error handling has been changed in Apollo 4, All error classes get combined into one class and you use error code to differniate between them. [here](https://www.apollographql.com/docs/apollo-server/migration/#apolloerror)
