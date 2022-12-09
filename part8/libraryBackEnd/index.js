@@ -133,27 +133,22 @@ const resolvers = {
     bookCount: async() => Book.countDocuments,
     authorCount: () => Author.countDocuments,
     allBooks: async(root, args) => {
-        let newBooks = await Book.find({})
-        if (args.author)
-            newBooks = newBooks.filter(b => b.author === args.author)
-        if (args.genre) 
-            newBooks =  newBooks.filter(b => b.genres.some(g => g === args.genre))
+        
+        let queryFilter = {}
+        if (args.author) {
+          queryFilter.author = args.author
+        }
+        if (args.genre) {
+          queryFilter.genres = {$in : args.genre}
+        }
+        let newBooks = await Book.find(queryFilter).populate('author')
         return newBooks
     }, 
-    allAuthors: async() => 
-        //  authors.map( (author)=>{
-        //     // let bookCount = 0
-        //     // books.forEach(b =>{
-        //     //     if (b.author == author.name)
-        //     //     bookCount++
-        //     // })
-        //     // return {...author, bookCount}
-          
-          
-        // })
-         (await Author.find({}))
+    allAuthors: async() => {
+      const  allAuthors = await Author.find({})
+      return allAuthors
     
-  }, 
+  }, },
   Mutation: {
     addBook: async(root, args) => {
       console.log('creating new book');
@@ -176,14 +171,22 @@ const resolvers = {
       await newBook.save();
       return newBook
     },
-    editAuthor: (root, args) => {
-      let oldAuthor = authors.find(author => author.name === args.name)
-      if(!oldAuthor)
+    editAuthor: async(root, args) => {
+      let updatedAuthor = await Author.findOneAndUpdate({name : args.name}, {born: args.setBornTo}, {new: true})
+      if(!updatedAuthor)
         return null
-      let updatedAuthor = {...oldAuthor, born: args.setBornTo}
-      authors = authors.map(author => author.name === updatedAuthor.name? updatedAuthor: author)
+
       return updatedAuthor
     }
+  }, 
+  Author: {
+    bookCount: async(root) => {
+      console.log(root._id);
+      const allBooks = await Book.find({name: root.name})
+      console.log(allBooks);
+      return allBooks.length
+      // return  5
+    } 
   }
   
 }
