@@ -18,5 +18,5 @@ const schema = new mongoose.Schema({
     { type: String}
   ]
 })
-
-module.exports = mongoose.model('Book', schema)
+const Book = mongoose.model('Book', schema)
+module.exports = Book

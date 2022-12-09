@@ -5,6 +5,9 @@ const { v4: uuidv4 } = require('uuid');
 const { mongo } = require('mongoose');
 require('dotenv').config()
 const mongoose = require('mongoose');
+const Book = require('./models/book');
+const Author = require('./models/author');
+const author = require('./models/author');
 
 mongoose.connect(process.env.MONGO_URL)
   .then(res => {
@@ -127,25 +130,28 @@ type Mutation {
 `
 const resolvers = {
   Query: {
-    bookCount: () => books.length,
-    authorCount: () => authors.length,
-    allBooks: (root, args) => {
-        let newBooks = [...books]
+    bookCount: async() => Book.countDocuments,
+    authorCount: () => Author.countDocuments,
+    allBooks: async(root, args) => {
+        let newBooks = await Book.find({})
         if (args.author)
             newBooks = newBooks.filter(b => b.author === args.author)
         if (args.genre) 
             newBooks =  newBooks.filter(b => b.genres.some(g => g === args.genre))
         return newBooks
     }, 
-    allAuthors: () => 
-         authors.map((author)=>{
-            let bookCount = 0
-            books.forEach(b =>{
-                if (b.author == author.name)
-                bookCount++
-            })
-            return {...author, bookCount}
-        })
+    allAuthors: async() => 
+        //  authors.map( (author)=>{
+        //     // let bookCount = 0
+        //     // books.forEach(b =>{
+        //     //     if (b.author == author.name)
+        //     //     bookCount++
+        //     // })
+        //     // return {...author, bookCount}
+          
+          
+        // })
+         (await Author.find({}))
     
   }, 
   Mutation: {
