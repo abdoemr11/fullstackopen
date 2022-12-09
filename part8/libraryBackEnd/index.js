@@ -135,13 +135,18 @@ const resolvers = {
     allBooks: async(root, args) => {
         
         let queryFilter = {}
+        let populateFilter = {
+          path: 'author',
+          
+        }
         if (args.author) {
-          queryFilter.author = args.author
+          populateFilter.match = {name: args.author}
         }
         if (args.genre) {
           queryFilter.genres = {$in : args.genre}
         }
-        let newBooks = await Book.find(queryFilter).populate('author')
+        console.log(queryFilter);
+        let newBooks = await Book.find(queryFilter).populate(populateFilter)
         return newBooks
     }, 
     allAuthors: async() => {
