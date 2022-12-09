@@ -1,4 +1,5 @@
 const { ApolloServer} = require('@apollo/server')
+const {GraphQLError} = require('graphql')
 const gql = require('graphql-tag')
 const { startStandaloneServer } =  require('@apollo/server/standalone');
 const { v4: uuidv4 } = require('uuid');
@@ -123,7 +124,7 @@ type Mutation {
         genres: [String!]!
       ): Book,
     editAuthor(
-      name: String!,
+      name: String,
       setBornTo: Int!
     ): Author
 }
@@ -177,9 +178,13 @@ const resolvers = {
       return newBook
     },
     editAuthor: async(root, args) => {
+      if(!args.name)
+      throw new GraphQLError("You should provide a valid author name", {extenstions: {
+        code : 'BAD_USER_INPUT',
+
+      }})
       let updatedAuthor = await Author.findOneAndUpdate({name : args.name}, {born: args.setBornTo}, {new: true})
-      if(!updatedAuthor)
-        return null
+
 
       return updatedAuthor
     }
