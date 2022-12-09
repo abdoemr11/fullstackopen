@@ -87,3 +87,9 @@ the two main changes:
 - the use of standalone server instead of using ApolloServer object directly
 - gql is no longer imported from @apollo/server but from graphql-tag
 for future reference check [this](https://www.apollographql.com/docs/apollo-server/migration/)
+> const { v4: uuidv4 } = require('uuid'); lol 
+
+### 8.3 
+It is not recommended to put the business logic into the resolver.  
+There is a method for importing JSON to Mongodb directly instead to manually importing them one by one or using mutation 
+look [here](https://www.mongodb.com/compatibility/json-to-mongodb)

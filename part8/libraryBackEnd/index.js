@@ -155,25 +155,26 @@ const resolvers = {
     
   }, 
   Mutation: {
-    addBook: (root, args) => {
+    addBook: async(root, args) => {
       console.log('creating new book');
-        let authorName = args.author
-        if(!authors.some(author => author.name === authorName)) {
-            //Create new Author
-            let newAuthor = {
-                name: authorName,
-                id: uuidv4(), 
-                born: null
-            }
-            authors = authors.concat(newAuthor)
+      let author = await Author.findOne({name:args.author})
+      console.log("The Author is ",author);
+      if(!author) {
+        let authorData = {
+          name: args.author,
+          born: null
         }
-        console.log('new id', uuidv4());
-        const newBook = {
-            ...args,
-            id: uuidv4()
-        }
-        books = books.concat(newBook)
-        return newBook
+        author = new Author({...authorData})
+        await author.save()
+        console.log("The Author is ",author);
+      }
+
+      const newBook = await new Book({           
+        ...args,
+        author: author}
+        )
+      await newBook.save();
+      return newBook
     },
     editAuthor: (root, args) => {
       let oldAuthor = authors.find(author => author.name === args.name)
