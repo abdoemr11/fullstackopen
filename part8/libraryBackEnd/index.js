@@ -169,7 +169,7 @@ const resolvers = {
         }
         console.log(queryFilter);
         let newBooks = await Book.find(queryFilter).populate(populateFilter)
-        return newBooks
+        return newBooks.filter(b=> b.author)
     }, 
     allAuthors: async() => {
       const  allAuthors = await Author.find({})
@@ -267,10 +267,26 @@ const resolvers = {
   }, 
   Author: {
     bookCount: async(root) => {
-      console.log(root._id);
-      const allBooks = await Book.find({name: root.name})
-      console.log(allBooks);
-      return allBooks.length
+      // console.log(root._id);
+      const allBooks = await Book.find({}).populate('author')
+      // const authorBooks = await Book.lookup({
+      //   path: Author.collection.name, 
+      //   query: {'name': root.name}
+      // })
+      // const authorBooks = Book.aggregate({
+      //   "$lookup": {
+      //     from: Author.collection.name, 
+      //   }
+      // })
+      // console.log(root.name, ' ',authorBooks);
+      const bookCount =  allBooks.reduce((acc, cur) => {
+        // console.log(cur.author.name, root.name);
+        if(cur.author.name === root.name)
+          return acc + 1
+        return acc
+      }, 0)
+      console.log(bookCount);
+      return bookCount
       // return  5
     } 
   },
@@ -300,7 +316,6 @@ startStandaloneServer(server, {
         }
 
         const currentUser = await User.findById(decodedToken.id)
-        console.log(currentUser);
         return { currentUser }
       } 
     }
