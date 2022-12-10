@@ -8,7 +8,8 @@ require('dotenv').config()
 const mongoose = require('mongoose');
 const Book = require('./models/book');
 const Author = require('./models/author');
-const author = require('./models/author');
+const User = require('./models/user')
+const jwt = require('jsonwebtoken')
 
 mongoose.connect(process.env.MONGO_URL)
   .then(res => {
@@ -18,6 +19,8 @@ mongoose.connect(process.env.MONGO_URL)
     console.log(e);
   })
 // console.log(gql);
+
+
 let authors = [
   {
     name: 'Robert Martin',
@@ -109,12 +112,22 @@ type Author {
     id: ID!,
     born: Int, 
     bookCount: Int!
+},
+type User {
+  username: String!
+  favouriteGenre: String!
+  id: ID!
+}
+
+type Token {
+  value: String!
 }
 type Query {
     bookCount: Int!, 
     authorCount: Int!,
     allBooks(author: String, genre: String): [Book!]!, 
     allAuthors: [Author!]!
+    me: User
   },
 type Mutation {
     addBook(
@@ -127,6 +140,14 @@ type Mutation {
       name: String,
       setBornTo: Int!
     ): Author
+    createUser(
+      username: String!
+      favouriteGenre: String!
+    ): User
+    login(
+      username: String!
+      password: String!
+    ): Token
 }
 `
 const resolvers = {
@@ -153,8 +174,10 @@ const resolvers = {
     allAuthors: async() => {
       const  allAuthors = await Author.find({})
       return allAuthors
-    
-  }, },
+  },
+  
+
+},
   Mutation: {
     addBook: async(root, args) => {
       console.log('creating new book');
@@ -174,7 +197,15 @@ const resolvers = {
         ...args,
         author: author}
         )
-      await newBook.save();
+        try {
+          await newBook.save();
+
+        } catch {
+          throw new GraphQLError("You should provide a valid author name", {extenstions: {
+            code : 'BAD_USER_INPUT',
+    
+          }})
+        }
       return newBook
     },
     editAuthor: async(root, args) => {
@@ -187,6 +218,36 @@ const resolvers = {
 
 
       return updatedAuthor
+    },
+    createUser: async(root, args) => {
+      const user = new User({...args})
+      try {
+        await user.save()
+      } catch(e) {
+        throw new GraphQLError(e, {extenstions: {
+          code : 'BAD_USER_INPUT',
+        }})
+      }
+    return user
+    },
+    login: async(root, args) => {
+      const user = await User.findOne({username: args.username})
+
+      if(!user || args.password != 'secret') {
+        throw new GraphQLError("The Password is incorrect", {extenstions: {
+          code : 'BAD_USER_INPUT',
+        }})
+      }
+
+      const userForToken = {
+        username: user.username, 
+        id: user._id
+      }
+      return {value: jwt.sign(userForToken,process.env.JSON_SECRET)}
+
+
+
+
     }
   }, 
   Author: {
@@ -197,7 +258,8 @@ const resolvers = {
       return allBooks.length
       // return  5
     } 
-  }
+  },
+
   
 }
 
