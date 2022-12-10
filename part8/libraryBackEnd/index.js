@@ -175,12 +175,22 @@ const resolvers = {
       const  allAuthors = await Author.find({})
       return allAuthors
   },
+  me: async(root, args, contextValue)=> {
+    const user = await User.findOne({id: contextValue.currentUser.id})
+    console.log('logged user',user);
+    return user
+  }
   
 
 },
   Mutation: {
-    addBook: async(root, args) => {
+    addBook: async(root, args, contextValue) => {
       console.log('creating new book');
+      if(!contextValue.currentUser) {
+        throw new GraphQLError("You must provide user token", {extenstions: {
+          code : 'BAD_AUTHENTICATION',
+        }})
+      }
       let author = await Author.findOne({name:args.author})
       console.log("The Author is ",author);
       if(!author) {
@@ -200,15 +210,20 @@ const resolvers = {
         try {
           await newBook.save();
 
-        } catch {
-          throw new GraphQLError("You should provide a valid author name", {extenstions: {
+        } catch(e) {
+          throw new GraphQLError("Can't save new book to The database", {extenstions: {
             code : 'BAD_USER_INPUT',
     
           }})
         }
       return newBook
     },
-    editAuthor: async(root, args) => {
+    editAuthor: async(root, args, contextValue) => {
+      if(!contextValue.currentUser) {
+        throw new GraphQLError("You must provide user token", {extenstions: {
+          code : 'BAD_AUTHENTICATION',
+        }})
+      }
       if(!args.name)
       throw new GraphQLError("You should provide a valid author name", {extenstions: {
         code : 'BAD_USER_INPUT',
@@ -235,7 +250,7 @@ const resolvers = {
 
       if(!user || args.password != 'secret') {
         throw new GraphQLError("The Password is incorrect", {extenstions: {
-          code : 'BAD_USER_INPUT',
+          code : 'BAD_AUTHENTICATION',
         }})
       }
 
@@ -266,10 +281,29 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+ 
 })
 
 startStandaloneServer(server, {
     listen: { port: 4000 },
+    context: async ({req, res})=>{
+      const auth = req ? req.headers.authorization : null
+      if (auth && auth.toLowerCase().startsWith('bearer ')) {
+        // console.log(process.env.JSON_SECRET);
+        let decodedToken
+        try {
+          decodedToken = jwt.verify(
+            auth.substring(7), process.env.JSON_SECRET
+          )
+        } catch(e) {
+          console.log(e);
+        }
+
+        const currentUser = await User.findById(decodedToken.id)
+        console.log(currentUser);
+        return { currentUser }
+      } 
+    }
   }).then(({url})=>{
     console.log(`🚀  Server ready at: ${url}`);
 
