@@ -104,3 +104,7 @@ look [here](https://www.mongodb.com/compatibility/json-to-mongodb)
 - There are many things to learn in mongodb
 - I forget to use setContext so I spend an hour catching unknown bug but apollo dev tool came to the rescue
 - After reading [SCIP](https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/index.html) I found that many concepts of list operations implemented in scheme there find its way into javascript i.e [flatmap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap)
+### 8.e
+- I think the hard part with subscription is configureation otherwise it seems to be straightforward
+- Apollo recommend against using [PubSub](https://www.apollographql.com/docs/apollo-server/data/subscriptions#the-pubsub-class)
+- I will take a rest from graphql and will follow this [tutorial](https://www.youtube.com/watch?v=dFgzHOX84xQ) of tailwind.
