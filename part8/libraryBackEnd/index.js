@@ -128,6 +128,7 @@ type Query {
     allBooks(author: String, genre: String): [Book!]!, 
     allAuthors: [Author!]!
     me: User
+    allGenres: [String!]!
   },
 type Mutation {
     addBook(
@@ -167,19 +168,24 @@ const resolvers = {
         if (args.genre) {
           queryFilter.genres = {$in : args.genre}
         }
-        console.log(queryFilter);
+        // console.log(queryFilter);
         let newBooks = await Book.find(queryFilter).populate(populateFilter)
         return newBooks.filter(b=> b.author)
     }, 
     allAuthors: async() => {
       const  allAuthors = await Author.find({})
       return allAuthors
-  },
-  me: async(root, args, contextValue)=> {
-    const user = await User.findOne({id: contextValue.currentUser.id})
-    console.log('logged user',user);
-    return user
-  }
+    },
+    allGenres: async() => {
+      const books = await Book.find({})
+      const genres = [...new Set(books.flatMap(b => b.genres))]
+      return genres
+    },
+    me: async(root, args, contextValue)=> {
+      const user = await User.findOne({id: contextValue.currentUser.id})
+      console.log('logged user',user);
+      return user
+    }
   
 
 },
@@ -285,7 +291,7 @@ const resolvers = {
           return acc + 1
         return acc
       }, 0)
-      console.log(bookCount);
+      // console.log(bookCount);
       return bookCount
       // return  5
     } 
@@ -317,7 +323,9 @@ startStandaloneServer(server, {
 
         const currentUser = await User.findById(decodedToken.id)
         return { currentUser }
-      } 
+      } else 
+        console.log();
+
     }
   }).then(({url})=>{
     console.log(`🚀  Server ready at: ${url}`);

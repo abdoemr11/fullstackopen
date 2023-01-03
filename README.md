@@ -81,7 +81,7 @@ I need to search more on this topic.
 
 ## Part 8
 [How To GraphQl](https://www.howtographql.com/basics/) has a good introduction videos to GQL
-### 8.1 
+### 8.a 
 Apollo v4 has many changes compared to v3 
 the two main changes: 
 - the use of standalone server instead of using ApolloServer object directly
@@ -89,8 +89,18 @@ the two main changes:
 for future reference check [this](https://www.apollographql.com/docs/apollo-server/migration/)
 > const { v4: uuidv4 } = require('uuid'); lol 
 
-### 8.3 
+### 8.c 
 - It is not recommended to put the business logic into the resolver.  
 - There is a method for importing JSON to Mongodb directly instead to manually importing them one by one or using mutation 
 look [here](https://www.mongodb.com/compatibility/json-to-mongodb)
 - The error handling has been changed in Apollo 4, All error classes get combined into one class and you use error code to differniate between them. [here](https://www.apollographql.com/docs/apollo-server/migration/#apolloerror)
+- I don't know what should I do 8.15- The error validation - as apollo server automatically throw the appropriate error.
+- I got it, they don't mean graphql errors but errors from mongodb and similar stuff.
+- At this state The backend need urgent refactor to create controller for handling mongodb queries and make graphql resolver only delegate work to thses queries
+
+### 8.d
+- It turned out that I got the bookCount wrong read --again-- [this](https://mongoosejs.com/docs/populate.html#query-conditions) carefully
+- read [this](https://stackoverflow.com/questions/11303294/querying-after-populate-in-mongoose) also 
+- There are many things to learn in mongodb
+- I forget to use setContext so I spend an hour catching unknown bug but apollo dev tool came to the rescue
+- After reading [SCIP](https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/index.html) I found that many concepts of list operations implemented in scheme there find its way into javascript i.e [flatmap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap)

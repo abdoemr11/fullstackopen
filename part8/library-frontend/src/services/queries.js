@@ -10,6 +10,11 @@ query AllAuthors {
   }
 }
 `
+export const ALL_GENRES = gql`
+query AllGenres {
+  allGenres
+}
+`
 export const ALL_BOOKS = gql`
 
   query AllBooks($genre: String, $author: String) {
@@ -27,4 +32,13 @@ export const ALL_BOOKS = gql`
     }
   }
   
+`
+export const ME = gql`
+query Me {
+  me {
+    username
+    favouriteGenre
+    id
+  }
+}
 `

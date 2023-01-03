@@ -5,7 +5,9 @@ mutation AddBook($title: String!, $author: String!, $published: Int!, $genres: [
     addBook(title: $title, author: $author, published: $published, genres: $genres) {
       title
       published
-      author
+      author {
+        id
+      }
       genres
     }
   }
