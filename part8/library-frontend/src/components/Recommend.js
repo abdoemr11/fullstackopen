@@ -10,7 +10,7 @@ const Recommend = (props) => {
     })
     useEffect(()=>{
       console.log(userResult);
-        if(!userResult.loading)
+        if(userResult.data && !userResult.loading)
             setFavGenre(userResult.data.me.favouriteGenre)
 
     }, [userResult])

@@ -108,3 +108,7 @@ look [here](https://www.mongodb.com/compatibility/json-to-mongodb)
 - I think the hard part with subscription is configureation otherwise it seems to be straightforward
 - Apollo recommend against using [PubSub](https://www.apollographql.com/docs/apollo-server/data/subscriptions#the-pubsub-class)
 - I will take a rest from graphql and will follow this [tutorial](https://www.youtube.com/watch?v=dFgzHOX84xQ) of tailwind.
+- Time to refactor the backend. I will begin by extracting query definitions and resolver into their own modules
+- I get tired of debugging silly graphql, The last bug was that readQuery -and hence updateQuery- was returning null. The solution was to use the exact query options that you used with useQuery(variable, etc..).
+- To solve n+1 problem I suggest embedding the books to the author models -as described in section 8.e- but I won't implement it. 
+- I think I'm done with this part time to finish part 7 to jump to typescript.

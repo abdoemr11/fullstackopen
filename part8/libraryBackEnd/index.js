@@ -42,10 +42,8 @@ const wsServer = new WebSocketServer({
 
 const serverCleanup = useServer({ schema }, wsServer);
 const context = async ({req, res})=>{
-  console.log('hitting context');
   const auth = req ? req.headers.authorization : null
   if (auth && auth.toLowerCase().startsWith('bearer ')) {
-    console.log(process.env.JSON_SECRET);
     let decodedToken
     try {
       decodedToken = jwt.verify(
