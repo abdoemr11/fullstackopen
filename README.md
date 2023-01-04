@@ -78,6 +78,9 @@ prettier and eslint have common tasks but they are not the same
 I need to search more on this topic.
 
 > :warning: **I will ignore 7.18: 7.21 for now**
+> :smile: time to finish this part 
+- It seems that I had already implemented the comment secion in 7.18 and 7.19 there was a bug due that some documents were not created by user but I handled it. It looks ridiculus as I was delaying commiting these source files until I fix this bug.  
+- I will use InshallAllah tailwind for styling following this [tutorial](https://www.youtube.com/watch?v=dFgzHOX84xQ&t=2751s) first
 
 ## Part 8
 [How To GraphQl](https://www.howtographql.com/basics/) has a good introduction videos to GQL

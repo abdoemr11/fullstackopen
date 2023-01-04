@@ -73,5 +73,14 @@ export const createNewBlog = (newTitle,newAuthor, newUrl, token) => {
     }
   }
 }
+export const addNewComment = (id,comment, token) => {
+  return async dispatch => {
+    console.log(token)
+    blogService.setToken(token)
+
+    const newBlog = await blogService.addComment(id,comment)
+    dispatch(replaceBlog(newBlog))
+  }
+}
 export default blogSlicer.reducer
 export const { setBlogs, appendBlog, deleteBlog, replaceBlog, sortBlogs }  = blogSlicer.actions

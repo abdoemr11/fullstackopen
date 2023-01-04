@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, Navigate  } from 'react-router-dom'
-import { removeBlog, updateBlog } from '../reducers/BlogReducer'
+import { addNewComment, removeBlog, updateBlog } from '../reducers/BlogReducer'
+import { useState } from 'react'
 
 export const BlogView = () => {
   const blogs = useSelector(state => state.blog)
@@ -8,6 +9,7 @@ export const BlogView = () => {
   const params = useParams()
   const blog = blogs.find(u => u.id === params.blogId)
   const user = useSelector(state => state.loggedUser)
+  const [commentInput, setCommentInput] = useState('')
   const handleUpdateBlogLike = () => {
     console.log('incrementing likes')
     console.log(blog)
@@ -21,6 +23,11 @@ export const BlogView = () => {
       dispatch(removeBlog(blog.id, user.token)
       )
   }
+
+  const handleNewComment = () => {
+    dispatch(addNewComment(blog.id, { comment: commentInput }, user.token))
+  }
+
   if(blog)
     return (
       <div>
@@ -32,8 +39,20 @@ export const BlogView = () => {
             onClick={() => handleUpdateBlogLike()}>
             like</button>
         </p>
-        <p>added by {blog.user.name}</p>
+        <p>added by {blog.user? blog.user.name: <del>no user</del>}</p>
         <button onClick={handleRemove}>remove</button>
+        <div>
+          <h2>Comments</h2>
+          <input type="text" onChange={(e) => setCommentInput(e.target.value)}/>
+          <button onClick={handleNewComment}>add comment</button>
+          {blog.comments.length?
+            <ul>
+              {blog.comments.map((com,k) => <li key={k}>{com}</li>)}
+
+            </ul>
+            : <p>{'This blog doesn\'t have any comments'}</p>
+          }
+        </div>
       </div>
     )
   return(

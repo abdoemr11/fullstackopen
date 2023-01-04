@@ -7,7 +7,7 @@ const errorHandler = (error, request, response, next) => {
     console.log(error.name)
 
     if (error.name === 'CastError') {
-        return response.status(400).send({ error: 'malformatted id' })
+        return response.status(400).send({ error: 'malformed id' })
     } else if (error.name === 'ValidationError') {
         return response.status(400).json({ error: error.message })
     } else if (error.name === 'MongoServerError') {
@@ -30,6 +30,7 @@ const userExtractor = (req, res, next) => {
         req.user = jwt.verify(req.token, process.env.SECRET)
 
     }
+
     next()
 }
 module.exports = {

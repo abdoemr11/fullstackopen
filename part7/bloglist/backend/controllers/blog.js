@@ -96,4 +96,31 @@ blogRouter.put('/:id', async (request, response, next) => {
         response.status(400).end()
     }
 })
+blogRouter.post('/:id/comment', async (request, response, next) => {
+    console.log('hitting here')
+    if(!request?.user?.id) {
+
+        return response.status(401).json({ error: 'token missing or invalid' })
+    }
+    const comment = request.body
+    console.log(comment.comment)
+    try {
+        const blog = await  Blog.findById(request.params.id)
+        if(blog.comments)
+            blog.comments = blog.comments.concat(comment.comment)
+        else
+            blog.comments = [comment.comment]
+        const resultComment = await blog.save()
+        response.status(201).json(resultComment)
+    } catch (e) {
+        next(e)
+    }
+
+
+    // if(!user.blogs)
+    //     user.blogs = [resultBlog]
+    // else
+    //     user.blogs = user.blogs.concat(resultBlog)
+    // await user.save()
+})
 module.exports = blogRouter
