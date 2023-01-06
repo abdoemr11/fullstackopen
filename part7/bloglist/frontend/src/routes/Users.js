@@ -1,13 +1,12 @@
 import {  useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
+// import Avatar from 'boring-avatars'
 export const Users = () => {
   const users = useSelector(state => state.users)
 
 
   return(
     <div>
-      <h1>Users</h1>
       <div style={{ display: 'flex',
         width: '30%',
         justifyContent: 'center'

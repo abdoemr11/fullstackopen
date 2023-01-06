@@ -15,6 +15,8 @@ import './index.css'
 import Logo from './components/Logo'
 import Avatar from 'boring-avatars'
 import { MyButton } from './components/MyButton'
+import Toggable from './components/Toggable'
+import { NewBlogForm } from './components/NewBlogForm'
 
 
 const App = () => {
@@ -58,8 +60,8 @@ const App = () => {
         <>
 
           <div>
-            <div>
-              <header className='container flex gap-4 justify-between '>
+            <div className='container'>
+              <header className=' flex gap-4 justify-between '>
                 <Logo/>
 
                 <div className='flex justify-between space-x-4 items-center'>
@@ -72,10 +74,16 @@ const App = () => {
                   <MyButton onClick={handleLogout} btnText={'Log out'}/>
                 </div>
               </header>
-              <Link className='text-xl text-lime-600' to={'/'}>blogs </Link>
-              <Link to={'/users'}>users </Link>
-              {`${user.name} logged In`}
+              <div className='flex justify-start gap-64 p-4'>
+                <Link className='text-xl text-mainBlue font-bold' to={'/'}>Blogs </Link>
+                <Link className='text-xl text-mainBlue font-bold' to={'/users'}>Users </Link>
+                <Toggable className='justify-self-end ml-auto'
+                  buttonLabel={'new blog'}>
+                  <NewBlogForm
 
+                  />
+                </Toggable>
+              </div>
             </div>
             <Routes>
               <Route path='users' element={<Users/>}/>
