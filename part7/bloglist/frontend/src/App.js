@@ -11,7 +11,7 @@ import { Blogs } from './routes/Blogs'
 import { getAllUsers } from './reducers/usersReducer'
 import { getAllBlog } from './reducers/BlogReducer'
 import { BlogView } from './routes/BlogView'
-
+import './index.css'
 
 
 const App = () => {
