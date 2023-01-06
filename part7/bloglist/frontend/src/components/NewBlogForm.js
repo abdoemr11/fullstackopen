@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { createNewBlog } from '../reducers/BlogReducer'
 import { useDispatch, useSelector } from 'react-redux'
+import { MyButton } from './MyButton'
 
 export const NewBlogForm = ( ) => {
   const[newTitle, setNewTitle] = useState('')
@@ -42,9 +43,10 @@ export const NewBlogForm = ( ) => {
 
       />
       <br/>
-      <button onClick={handleCreateBlog}
+      <MyButton onClick={handleCreateBlog}
         data-cy='create-blog-button'
-      >create</button>
+        btnText={'create'}
+      />
     </div>
   )
 }

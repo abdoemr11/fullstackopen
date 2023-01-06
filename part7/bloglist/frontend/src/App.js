@@ -14,6 +14,7 @@ import { BlogView } from './routes/BlogView'
 import './index.css'
 import Logo from './components/Logo'
 import Avatar from 'boring-avatars'
+import { MyButton } from './components/MyButton'
 
 
 const App = () => {
@@ -68,9 +69,7 @@ const App = () => {
                     />
                     {user.name}
                   </div>
-                  <button onClick={handleLogout}
-                    className=' bg-mainBlue rounded-2xl px-2 py-2 text-white cursor-pointer '
-                  >Log out</button>
+                  <MyButton onClick={handleLogout} btnText={'Log out'}/>
                 </div>
               </header>
               <Link className='text-xl text-lime-600' to={'/'}>blogs </Link>
