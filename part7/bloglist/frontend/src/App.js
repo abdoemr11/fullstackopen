@@ -12,6 +12,8 @@ import { getAllUsers } from './reducers/usersReducer'
 import { getAllBlog } from './reducers/BlogReducer'
 import { BlogView } from './routes/BlogView'
 import './index.css'
+import Logo from './components/Logo'
+import Avatar from 'boring-avatars'
 
 
 const App = () => {
@@ -56,10 +58,25 @@ const App = () => {
 
           <div>
             <div>
-              <Link to={'/'}>blogs </Link>
+              <header className='container flex gap-4 justify-between '>
+                <Logo/>
+
+                <div className='flex justify-between space-x-4 items-center'>
+                  <div className='flex flex-col justify-center items-center'>
+                    <Avatar name={user.name}
+                      variant="beam"
+                    />
+                    {user.name}
+                  </div>
+                  <button onClick={handleLogout}
+                    className=' bg-mainBlue rounded-2xl px-2 py-2 text-white cursor-pointer '
+                  >Log out</button>
+                </div>
+              </header>
+              <Link className='text-xl text-lime-600' to={'/'}>blogs </Link>
               <Link to={'/users'}>users </Link>
               {`${user.name} logged In`}
-              <button onClick={handleLogout}>Log out</button>
+
             </div>
             <Routes>
               <Route path='users' element={<Users/>}/>
