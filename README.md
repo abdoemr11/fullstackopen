@@ -81,7 +81,9 @@ I need to search more on this topic.
 > :smile: time to finish this part 
 - It seems that I had already implemented the comment secion in 7.18 and 7.19 there was a bug due that some documents were not created by user but I handled it. It looks ridiculus as I was delaying commiting these source files until I fix this bug.  
 - I will use InshallAllah tailwind for styling following this [tutorial](https://www.youtube.com/watch?v=dFgzHOX84xQ&t=2751s) first
-- I acciddently overwrite tailwind color themes and as usual spend an hour trying to fix the wrong problem.
+- I accidentally overwrite tailwind color themes and as usual, spend an hour trying to fix the wrong problem.
+- Nearly finished the styling. New blog form and Notification are next.
+- I used NavLink instead of Link to show the currently active link.
 
 ## Part 8
 [How To GraphQl](https://www.howtographql.com/basics/) has a good introduction videos to GQL

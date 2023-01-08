@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addNotification } from './reducers/notificationReducer'
 import { setUser } from './reducers/loggedUserReducer'
 import { LoginForm } from './components/LoginForm'
-import { Link, Route, Routes } from 'react-router-dom'
+import {  NavLink, Route, Routes } from 'react-router-dom'
 import { Users } from './routes/Users'
 import { User } from './routes/User'
 import { Blogs } from './routes/Blogs'
@@ -37,6 +37,11 @@ const App = () => {
     dispatch(addNotification({ type: 'Success', msg: 'You Logged Out' }, 3))
     dispatch(setUser(null))
   }
+  const styleActiveLink = ({ isActive }) => {
+    const activeStyle = isActive?'text-red-500': ''
+    return 'text-xl text-mainBlue font-bold ' + activeStyle
+  }
+
 
   // There is an obvious logic error here
   // When we press the like button we must keep track of who liked the blog
@@ -61,12 +66,12 @@ const App = () => {
                 </div>
               </header>
               <div className="flex justify-start gap-64 p-4">
-                <Link className="text-xl text-mainBlue font-bold" to={'/'}>
+                <NavLink className={styleActiveLink} to={'/'}>
                   Blogs{' '}
-                </Link>
-                <Link className="text-xl text-mainBlue font-bold" to={'/users'}>
+                </NavLink>
+                <NavLink className={styleActiveLink} to={'/users'}>
                   Users{' '}
-                </Link>
+                </NavLink>
                 <Toggable
                   className="justify-self-end ml-auto"
                   buttonLabel={'new blog'}
