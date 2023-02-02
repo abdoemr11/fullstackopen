@@ -30,33 +30,36 @@ const calculateExercises = (days: number[], target: number): exerciseResult => {
         average: averageHours  
     }
 }
-interface Result {
-    days: number[];
-    target: number;
+export {
+    calculateExercises
 }
-const handleArguments = (args: Array<string>): Result => {
-    if(args.length < 3) 
-        throw new Error("Tow few arguments");
-    args = [...args.slice(2)]
-    const numberArgs = args.map(a => {
-        if(isNaN(Number(a)))
-            throw new Error ('Provided values were not numbers!'+ a)
-        return Number(a)
-    })
-    return {
-        days: [...numberArgs.slice(1)],
-        target: numberArgs[0]
-    }
+// interface Result {
+//     days: number[];
+//     target: number;
+// }
+// const handleArguments = (args: Array<string>): Result => {
+//     if(args.length < 3) 
+//         throw new Error("Tow few arguments");
+//     args = [...args.slice(2)]
+//     const numberArgs = args.map(a => {
+//         if(isNaN(Number(a)))
+//             throw new Error ('Provided values were not numbers!'+ a)
+//         return Number(a)
+//     })
+//     return {
+//         days: [...numberArgs.slice(1)],
+//         target: numberArgs[0]
+//     }
     
-}
+// }
 
-try {
-    const {days, target} = handleArguments(process.argv);
-    console.log(calculateExercises(days, target));
+// try {
+//     const {days, target} = handleArguments(process.argv);
+//     console.log(calculateExercises(days, target));
 
     
-} catch (e: unknown) {
-    if(e instanceof Error)
-        console.log('There is a fatal Error:  ', e.message);
+// } catch (e: unknown) {
+//     if(e instanceof Error)
+//         console.log('There is a fatal Error:  ', e.message);
     
-}
+// }
