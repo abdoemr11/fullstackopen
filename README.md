@@ -118,3 +118,8 @@ look [here](https://www.mongodb.com/compatibility/json-to-mongodb)
 - I get tired of debugging silly graphql, The last bug was that readQuery -and hence updateQuery- was returning null. The solution was to use the exact query options that you used with useQuery(variable, etc..).
 - To solve n+1 problem I suggest embedding the books to the author models -as described in section 8.e- but I won't implement it. 
 - I think I'm done with this part time to finish part 7 to jump to typescript.
+
+
+## Part 9 
+### 9.ab
+- I encountered a strange error 'Cannot redeclare block scoped variable' when I tried to copy handleArguments functions into the exercises calculator. I fixed it simply by adding an empty export object at the end of the file. More on that[here](https://stackoverflow.com/questions/35758584/cannot-redeclare-block-scoped-variable)
