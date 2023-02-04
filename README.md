@@ -125,3 +125,7 @@ look [here](https://www.mongodb.com/compatibility/json-to-mongodb)
 - In the cases of very long range => value table i.e the bmi table, I think object with methods is better than if elseif.
 - I encountered a strange error 'Cannot redeclare block scoped variable' when I tried to copy handleArguments functions into the exercises calculator. I fixed it simply by adding an empty export object at the end of the file. More on that[here](https://stackoverflow.com/questions/35758584/cannot-redeclare-block-scoped-variable)
 - if I disable eslint for errors what's the point of using it.
+
+### 9.c
+- let's begin the fun
+- I found this intersting [article](https://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/) about jest testing. However I won't use jest. The integration with the frond end should be enought.
