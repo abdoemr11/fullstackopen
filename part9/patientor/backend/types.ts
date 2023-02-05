@@ -3,6 +3,17 @@ interface Diagnose {
     name: string;
     latin?: string;    
 }
+interface Patient {
+
+    id: string
+    name: string,
+    dateOfBirth: string,
+    ssn: string,
+    gender: string,
+    occupation: string
+  
+}
 export  {
-    Diagnose
+    Diagnose,
+    Patient
 };
