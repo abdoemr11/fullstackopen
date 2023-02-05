@@ -129,3 +129,5 @@ look [here](https://www.mongodb.com/compatibility/json-to-mongodb)
 ### 9.c
 - let's begin the fun
 - I found this intersting [article](https://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/) about jest testing. However I won't use jest. The integration with the frond end should be enought.
+- In the text, It recommended not to import json data directlry but wrap it within a module to easily validate and assert its types, however I didn't do that in the exercises. 
+- 

@@ -1,7 +1,7 @@
 import patientData from '../data/patients.json';
-import { Patient } from '../types';
-
-const patients: Array<Patient> = patientData;
+import { NewPatient, Patient } from '../types';
+import { v1 as uuid } from 'uuid';
+let patients: Array<Patient> = patientData as Array<Patient>;
 
 const getPatients = (): Array<Omit<Patient, 'ssn'>> => {
 
@@ -13,4 +13,14 @@ const getPatients = (): Array<Omit<Patient, 'ssn'>> => {
         occupation
     }));
 };
-export { getPatients};
+const addPatient = (patientEntry: NewPatient): Patient => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    const newId: string = uuid() as string;
+    const newPatient: Patient = {
+        id: newId,
+        ...patientEntry
+    };
+    patients = patients.concat();
+    return newPatient;
+};
+export  { getPatients, addPatient};
