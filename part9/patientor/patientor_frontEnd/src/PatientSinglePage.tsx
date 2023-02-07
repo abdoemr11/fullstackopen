@@ -4,10 +4,19 @@ import { useParams } from "react-router-dom";
 import { apiBaseUrl } from "./constants";
 import { useStateValue } from "./state";
 import { Patient } from "./types";
+import MaleIcon from '@mui/icons-material/Male';
+import FemaleIcon from '@mui/icons-material/Female';
+import TwoWheelerIcon from '@mui/icons-material/TwoWheeler';
+const genders = {
+    male: <MaleIcon/>,
+    female: <FemaleIcon/>,
+    other: <TwoWheelerIcon/>
+};
 const PatientSinglePage = () => {
     const [state, dispatch] = useStateValue();
     const { patientId } = useParams<{ patientId: string }>();
     const patient: Patient | undefined = Object.values(state.patients).find((p: Patient) => p.id === patientId);
+    console.log(genders['male'] == <MaleIcon/>);
     
 
     React.useEffect(()=> {
@@ -35,9 +44,19 @@ const PatientSinglePage = () => {
             {patient
             ?
             <>
-            <h2>{patient.name } {patient.gender}</h2>
+            <h2>{patient.name } {genders[patient.gender]} </h2> 
             <p>ssn {patient.ssn}</p>
             <p>occupation: {patient.occupation}</p>
+            <h3>Entries</h3>
+            {patient.entries.map(e => <div key={e.id}>
+                {e.date} {e.description}
+                <ul>
+                {e.diagnosisCodes?.map(d => 
+                    <li key={d}>{d}</li>
+                )}
+                </ul>
+
+            </div>)}
             </>
             :<span> No patient with given id</span>}
         </div>

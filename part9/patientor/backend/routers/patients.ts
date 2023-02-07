@@ -39,6 +39,6 @@ patientRouter.post('/', (req, res)=> {
         res.status(400).send(errorMessage);
     }
     
-})
+});
 
 export default patientRouter;

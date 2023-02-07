@@ -1,4 +1,4 @@
-import { Gender, NewPatient } from "./types";
+import { Diagnose, Gender, NewPatient } from "./types";
 
 // interface UnVerifiedData {
 //     name: unknown,
@@ -17,6 +17,11 @@ const isDate = (date: string): boolean => {
 const isGender = (g: any): g is Gender => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return Object.values(Gender).includes(g);
+};
+const parseString = (value: unknown, type: string): string => {
+    if(!value || !isString(value) )
+        throw new Error('Error validating ' + type);
+    return value;
 };
 const parseName = (name: unknown): string => {
     if(!name || !isString(name) )
@@ -52,4 +57,18 @@ export const toNewPatientEntry = (object: any):NewPatient => {
         entries: []
     };
     return newPatient;
+};
+export const validateNewEntry = (object: any): Diagnose => {
+    let newDiag:Diagnose =  {
+        code: parseString(object.code, 'Diagnose Code'),
+        name: parseString(object.name, 'Diagnose name'),
+    };
+    if(object.latin)
+        newDiag = {
+            ...newDiag, 
+            latin: parseString(object.latin, 'Diagnose Latin'),
+
+        };
+    
+    return newDiag;
 };
