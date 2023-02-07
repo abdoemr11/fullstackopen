@@ -1,18 +1,17 @@
-import patientData from '../data/patients.json';
+// import patientData from '../data/patients.json';
 import { NewPatient, Patient } from '../types';
 import { v1 as uuid } from 'uuid';
-let patients: Array<Patient> = patientData as Array<Patient>;
-patients = patients.map(p => ({...p, entries: []}));
-const getPatients = (): Array<Omit<Patient, 'ssn'>> => {
+import patientsData from '../data/patients';
+let patients: Array<Patient> = patientsData ;
+console.log(patients[0].entries[0].id);
 
-    return patients.map(({id, name, dateOfBirth, gender, occupation, entries}) => ({
-        id,
-        name,
-        dateOfBirth,
-        gender,
-        occupation,
-        entries
-    }));
+const getPatients = (): Array<Omit<Patient, 'ssn'>> => {
+    
+    return patients.map(p => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const {ssn, ...patientWithoutSSn} = p;
+        return patientWithoutSSn;
+    });
 };
 const addPatient = (patientEntry: NewPatient): Patient => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -29,5 +28,5 @@ const findOnePatient = (id: string): Patient => {
     if(!patient)
         throw new Error('No Patient with this id');
     return patient;
-}
+};
 export  default{ getPatients, addPatient, findOnePatient};
