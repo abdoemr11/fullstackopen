@@ -7,6 +7,7 @@ import { Patient } from "./types";
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TwoWheelerIcon from '@mui/icons-material/TwoWheeler';
+import EntryDetails from "./components/EntryDetails";
 const genders = {
     male: <MaleIcon/>,
     female: <FemaleIcon/>,
@@ -48,15 +49,7 @@ const PatientSinglePage = () => {
             <p>ssn {patient.ssn}</p>
             <p>occupation: {patient.occupation}</p>
             <h3>Entries</h3>
-            {patient.entries.map(e => <div key={e.id}>
-                {e.date} {e.description}
-                <ul>
-                {e.diagnosisCodes?.map(d => 
-                    <li key={d}>{d}</li>
-                )}
-                </ul>
-
-            </div>)}
+            {patient.entries.map(e => <EntryDetails key={e.id} entry={e}/>)}
             </>
             :<span> No patient with given id</span>}
         </div>

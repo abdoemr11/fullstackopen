@@ -1,7 +1,7 @@
 import express from 'express';
 import diagonoseService from '../services/diagnose';
 import { Diagnose } from '../types';
-import { validateNewEntry } from '../util';
+import { validateDiagnoses } from '../util';
 
 const diagnoseRouter = express.Router();
 diagnoseRouter.get('/', (_req, res) => {
@@ -27,7 +27,9 @@ diagnoseRouter.get('/:code', (req, res) => {
 });
 diagnoseRouter.post('/', (req, res) => {
     try {
-        const newDiagnose:Diagnose = validateNewEntry(req.body);
+        console.log('diagnoses post', req.body);
+        
+        const newDiagnose:Diagnose = validateDiagnoses(req.body);
         const addedDiagnose = diagonoseService.addDiagnose(newDiagnose);
         res.json(addedDiagnose);
         } catch (error:unknown) {

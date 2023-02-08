@@ -1,4 +1,4 @@
-import { Diagnose, Gender, NewPatient } from "./types";
+import { Diagnose, EntryWithoutId, Gender, NewPatient } from "./types";
 
 // interface UnVerifiedData {
 //     name: unknown,
@@ -58,7 +58,7 @@ export const toNewPatientEntry = (object: any):NewPatient => {
     };
     return newPatient;
 };
-export const validateNewEntry = (object: any): Diagnose => {
+export const validateDiagnoses = (object: any): Diagnose => {
     let newDiag:Diagnose =  {
         code: parseString(object.code, 'Diagnose Code'),
         name: parseString(object.name, 'Diagnose name'),
@@ -71,4 +71,43 @@ export const validateNewEntry = (object: any): Diagnose => {
         };
     
     return newDiag;
+};
+const doesContainFields = (object: unknown, fields: Array<string>): boolean => {
+    let result = true;
+    fields.forEach(f => {
+        if(!Object.prototype.hasOwnProperty.call(object, f)) {
+            result = false;
+            console.log('This field is invalied ', f);
+            
+        }
+    });
+    return result;
+};
+const isValidateEntry =(entry: unknown): entry is EntryWithoutId => {
+    if(!entry)
+        throw new Error('Invalid entry of the entries array');
+    const baseEntriesFields = ['description','date','specialist', 'type'];
+    const healthCheckEntryFields = ['healthCheckRating'];
+    const hospitalEntryFields = ['discharge'];
+    const occupationalHealthcareFields = ['employerName'];
+
+    return doesContainFields(entry, baseEntriesFields) &&
+        (doesContainFields(entry,healthCheckEntryFields) || doesContainFields(entry,hospitalEntryFields)
+        ||doesContainFields(entry, occupationalHealthcareFields));
+
+};
+export const validateEntries= (object: unknown): Array<EntryWithoutId> => {
+    
+    if(!Array.isArray(object))
+        throw new Error('not a valid entries array');
+    let resultEntries:Array<EntryWithoutId> = [];
+    object.forEach(entry => {
+        if(isValidateEntry(entry)) {
+            resultEntries = resultEntries.concat(entry);
+            
+        } else {
+            throw new Error('Invalid entry');
+        }
+    });
+    return resultEntries;
 };
