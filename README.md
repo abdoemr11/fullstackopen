@@ -131,3 +131,12 @@ look [here](https://www.mongodb.com/compatibility/json-to-mongodb)
 - I found this intersting [article](https://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/) about jest testing. However I won't use jest. The integration with the frond end should be enought.
 - In the text, It recommended not to import json data directlry but wrap it within a module to easily validate and assert its types, however I didn't do that in the exercises. 
 - I should devote more work to verifying data from external sources with typescript. I feel I begin to slowly absorb it.
+
+### 9.d
+- typescript force you to validate any or unkonwn data, and it turns out to be a tedious work. A good recipe would be to first your unit tests for every route with tons of malicious data that the user could send then gradually build your validation procedures with typescript setting beside you.
+- The only validation rule I use is to check for missing fields, the exact values of these could be anything but it was mentioned in the part that this was all that was required. 
+
+
+## Part 10
+### 10.a
+- First steps with react using expo but why expo not just plain create-react-native?

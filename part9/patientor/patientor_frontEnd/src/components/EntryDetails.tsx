@@ -6,40 +6,61 @@ import Box from '@mui/material/Box';
 const assertNever = (value: never): never => {
     throw new Error(`Unhandled discriminated union member: ${JSON.stringify(value)}`);
 };
-const EntryDetails = ({entry}: {entry: Entry}) => {
 
-    switch(entry.type) {
-        case "Hospital": 
-            return(
-                <Box>
-                    {entry.date} <LocalHospitalIcon/>
-                    {entry.description}
-                    Discharge {entry.discharge}
-                    Diagnose By{entry.specialist} 
-                </Box>
+const EntryDetails = ({entry}: {entry: Entry}) => {
+    // const style = {
+    //     display: 'flex',
+    //     flexDirection : 'column'
+    // }
+    return (
+    <Box style={{display: 'flex', flexDirection: 'column'}}>
+    {(() => {
+        switch (entry.type) {
+        case "Hospital":
+            return (
+            <>
+                <LocalHospitalIcon />
+                <span style={{ color: 'red' }}>
+                {entry.date} - {entry.description}
+                </span>
+                <br />
+                Discharge: {entry.discharge.date}
+                <br />
+                Criteria: {entry.discharge.criteria}
+            </>
             );
-        case "HealthCheck": 
-                return (
-                    <Box>
-                        {entry.date} <MedicalServicesIcon/>
-                        {entry.description}
-                        Health rate {entry.healthCheckRating}
-                        Diagnose By{entry.specialist} 
-                </Box>
-                );
-        case "OccupationalHealthcare": 
-                    return (
-                        <Box >
-                        {entry.date} <WorkIcon/>{entry.employerName}
-                        {entry.description}
-                        
-                        Diagnose By{entry.specialist} 
-                    </Box>
-                    );
-        default: 
-            assertNever(entry);
-    }
-    return null;
+        case "HealthCheck":
+            return (
+            <>
+                <MedicalServicesIcon />
+                <span>
+                {entry.date} - {entry.description}
+                </span>
+                <br />
+                Health Rating: {entry.healthCheckRating}
+            </>
+            );
+        case "OccupationalHealthcare":
+            return (
+            <>
+                <WorkIcon />
+                <span>
+                {entry.date} - {entry.description}
+                </span>
+                Employer: {entry.employerName}
+
+            </>
+            );
+        default:
+            return assertNever(entry);
+        }
+    })()}
+        <ul>
+            {entry.diagnosisCodes?.map(c => <li key={c}>{c}</li>)}
+        </ul>
+    </Box>
+
+    );
 };
 
 export default EntryDetails;
